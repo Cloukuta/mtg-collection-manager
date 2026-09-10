@@ -807,6 +807,113 @@
     }
 
     /* ==============================
+   RAPID BATCH
+============================== */
+
+.batch-panel {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--panel-2);
+}
+
+.batch-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.batch-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.batch-settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.batch-settings select {
+  width: 100%;
+}
+
+.batch-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+#startBatchBtn {
+  grid-column: 1 / -1;
+}
+
+.batch-counter {
+  margin-top: 14px;
+
+  text-align: center;
+
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+
+  color: var(--accent);
+}
+
+.batch-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.batch-preview img {
+  display: block;
+
+  width: 100%;
+  aspect-ratio: 63 / 88;
+
+  object-fit: cover;
+
+  border-radius: 7px;
+  border: 1px solid var(--line-2);
+}
+
+.batch-preview-item {
+  position: relative;
+}
+
+.batch-preview-number {
+  position: absolute;
+
+  top: 4px;
+  left: 4px;
+
+  min-width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, .78);
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+    /* ==============================
        DESKTOP
     ============================== */
 
@@ -961,6 +1068,121 @@
         </button>
 
       </div>
+
+      <!-- RAPID BATCH MODE -->
+
+<div class="batch-panel">
+
+  <div class="batch-title">
+    Rapid Batch
+  </div>
+
+  <div class="batch-settings">
+
+    <label>
+      Finish
+
+      <select id="batchFinish">
+        <option value="nonfoil">
+          Non-foil
+        </option>
+
+        <option value="foil">
+          Foil
+        </option>
+
+        <option value="etched">
+          Etched Foil
+        </option>
+
+        <option value="surgefoil">
+          Surge Foil
+        </option>
+
+        <option value="galaxyfoil">
+          Galaxy Foil
+        </option>
+
+        <option value="textured">
+          Textured Foil
+        </option>
+
+        <option value="review">
+          Other / Review
+        </option>
+      </select>
+    </label>
+
+
+    <label>
+      Batch size
+
+      <select id="batchSize">
+        <option value="4">
+          4 cards
+        </option>
+
+        <option value="6" selected>
+          6 cards
+        </option>
+
+        <option value="8">
+          8 cards
+        </option>
+      </select>
+    </label>
+
+  </div>
+
+
+  <div class="batch-actions">
+
+    <button
+      id="startBatchBtn"
+      class="ghost"
+    >
+      Start batch
+    </button>
+
+    <button
+      id="batchCaptureBtn"
+      class="primary"
+      disabled
+    >
+      Capture card
+    </button>
+
+    <button
+      id="clearBatchBtn"
+      class="ghost"
+      disabled
+    >
+      Clear batch
+    </button>
+
+  </div>
+
+
+  <div
+    id="batchCounter"
+    class="batch-counter"
+  >
+    0 / 6
+  </div>
+
+
+  <div
+    id="batchPreview"
+    class="batch-preview"
+  ></div>
+
+
+  <canvas
+    id="batchSheet"
+    style="display:none"
+  ></canvas>
+
+</div>
 
 
       <!-- STATUS -->
@@ -1303,7 +1525,7 @@
     Increase ?v= whenever app.js changes significantly.
   -->
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 
 </body>
 </html>

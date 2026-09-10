@@ -580,6 +580,542 @@ function showCandidate(card) {
   }
 }
 
+// ---------- rapid batch scanner ----------
+
+let batchActive = false;
+let batchSnapshots = [];
+
+function getBatchLimit() {
+  return Math.max(
+    1,
+    parseInt(
+      $("batchSize").value,
+      10
+    ) || 6
+  );
+}
+
+
+function updateBatchUI() {
+  const limit = getBatchLimit();
+  const count = batchSnapshots.length;
+
+  $("batchCounter").textContent =
+    `${count} / ${limit}`;
+
+  $("batchCaptureBtn").disabled =
+    !batchActive ||
+    !stream ||
+    count >= limit;
+
+  $("clearBatchBtn").disabled =
+    count === 0;
+
+  if (count >= limit) {
+    $("batchCaptureBtn").disabled = true;
+
+    setStatus(
+      `Batch ready: ${count} cards captured.`
+    );
+  }
+}
+
+
+function renderBatchPreview() {
+  const container =
+    $("batchPreview");
+
+  container.innerHTML = "";
+
+  batchSnapshots.forEach(
+    (snapshot, index) => {
+
+      const wrapper =
+        document.createElement("div");
+
+      wrapper.className =
+        "batch-preview-item";
+
+
+      const img =
+        document.createElement("img");
+
+      img.src =
+        snapshot.url;
+
+      img.alt =
+        `Batch card ${index + 1}`;
+
+
+      const number =
+        document.createElement("span");
+
+      number.className =
+        "batch-preview-number";
+
+      number.textContent =
+        String(index + 1);
+
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(number);
+
+      container.appendChild(wrapper);
+    }
+  );
+}
+
+
+$("batchSize").addEventListener(
+  "change",
+  () => {
+
+    if (batchSnapshots.length > 0) {
+      const confirmed = confirm(
+        "Changing the batch size will clear the current batch. Continue?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      clearBatch();
+    }
+
+    updateBatchUI();
+  }
+);
+
+
+$("startBatchBtn").addEventListener(
+  "click",
+  () => {
+
+    if (!stream || !stream.active) {
+      setStatus(
+        "Start the camera before starting Rapid Batch."
+      );
+
+      return;
+    }
+
+    batchActive = !batchActive;
+
+
+    if (batchActive) {
+
+      $("startBatchBtn").textContent =
+        "Stop batch";
+
+      $("batchFinish").disabled =
+        true;
+
+      $("batchSize").disabled =
+        true;
+
+      setStatus(
+        `Rapid Batch started — ${$("batchFinish").selectedOptions[0].textContent.trim()}.`
+      );
+
+    } else {
+
+      $("startBatchBtn").textContent =
+        "Start batch";
+
+      $("batchFinish").disabled =
+        false;
+
+      $("batchSize").disabled =
+        false;
+
+      setStatus(
+        "Rapid Batch stopped."
+      );
+    }
+
+    updateBatchUI();
+  }
+);
+
+
+$("clearBatchBtn").addEventListener(
+  "click",
+  () => {
+
+    if (batchSnapshots.length === 0) {
+      return;
+    }
+
+    const confirmed =
+      confirm(
+        "Clear the current batch captures?"
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    clearBatch();
+
+    setStatus(
+      "Batch cleared."
+    );
+  }
+);
+
+
+function clearBatch() {
+
+  batchSnapshots.forEach(
+    (snapshot) => {
+
+      if (snapshot.url) {
+        URL.revokeObjectURL(
+          snapshot.url
+        );
+      }
+    }
+  );
+
+  batchSnapshots = [];
+
+  renderBatchPreview();
+
+  updateBatchUI();
+}
+
+
+$("batchCaptureBtn").addEventListener(
+  "click",
+  () => {
+
+    if (!batchActive) {
+      return;
+    }
+
+
+    const limit =
+      getBatchLimit();
+
+
+    if (
+      batchSnapshots.length >=
+      limit
+    ) {
+      return;
+    }
+
+
+    const vw =
+      video.videoWidth;
+
+    const vh =
+      video.videoHeight;
+
+
+    if (!vw || !vh) {
+
+      setStatus(
+        "Camera not ready."
+      );
+
+      return;
+    }
+
+
+    /*
+      This uses the SAME card-frame logic
+      as the normal scanner.
+
+      The difference is that we do NOT send
+      anything to Gemini yet.
+    */
+
+    frameCanvas.width = vw;
+    frameCanvas.height = vh;
+
+
+    frameCanvas
+      .getContext("2d")
+      .drawImage(
+        video,
+        0,
+        0,
+        vw,
+        vh
+      );
+
+
+    const stage =
+      document.querySelector(
+        ".stage"
+      );
+
+    const sRect =
+      stage.getBoundingClientRect();
+
+
+    const bRect =
+      document
+        .querySelector(".cardbox")
+        .getBoundingClientRect();
+
+
+    const fx =
+      (
+        bRect.left -
+        sRect.left
+      ) /
+      sRect.width;
+
+
+    const fy =
+      (
+        bRect.top -
+        sRect.top
+      ) /
+      sRect.height;
+
+
+    const fw =
+      bRect.width /
+      sRect.width;
+
+
+    const fh =
+      bRect.height /
+      sRect.height;
+
+
+    const stageAR =
+      sRect.width /
+      sRect.height;
+
+
+    const vidAR =
+      vw / vh;
+
+
+    let visW = 1;
+    let visH = 1;
+    let cropX = 0;
+    let cropY = 0;
+
+
+    if (
+      vidAR >=
+      stageAR
+    ) {
+
+      visW =
+        stageAR /
+        vidAR;
+
+      cropX =
+        (1 - visW) / 2;
+
+    } else {
+
+      visH =
+        vidAR /
+        stageAR;
+
+      cropY =
+        (1 - visH) / 2;
+    }
+
+
+    const sx =
+      Math.round(
+        (
+          cropX +
+          fx * visW
+        ) * vw
+      );
+
+
+    const sy =
+      Math.round(
+        (
+          cropY +
+          fy * visH
+        ) * vh
+      );
+
+
+    const sw =
+      Math.round(
+        fw *
+        visW *
+        vw
+      );
+
+
+    const sh =
+      Math.round(
+        fh *
+        visH *
+        vh
+      );
+
+
+    /*
+      For batch mode we keep each individual
+      snapshot reasonably small.
+
+      700px is enough for this first test
+      and keeps the future contact sheet
+      manageable.
+    */
+
+    const scale =
+      Math.min(
+        1,
+        700 /
+        Math.max(sw, sh)
+      );
+
+
+    const dw =
+      Math.max(
+        1,
+        Math.round(
+          sw * scale
+        )
+      );
+
+
+    const dh =
+      Math.max(
+        1,
+        Math.round(
+          sh * scale
+        )
+      );
+
+
+    const snapshotCanvas =
+      document.createElement(
+        "canvas"
+      );
+
+
+    snapshotCanvas.width =
+      dw;
+
+    snapshotCanvas.height =
+      dh;
+
+
+    snapshotCanvas
+      .getContext("2d")
+      .drawImage(
+        frameCanvas,
+
+        sx,
+        sy,
+        sw,
+        sh,
+
+        0,
+        0,
+        dw,
+        dh
+      );
+
+
+    snapshotCanvas.toBlob(
+
+      (blob) => {
+
+        if (!blob) {
+
+          setStatus(
+            "Could not capture batch card."
+          );
+
+          return;
+        }
+
+
+        const url =
+          URL.createObjectURL(
+            blob
+          );
+
+
+        batchSnapshots.push({
+
+          blob,
+
+          url,
+
+          finish:
+            $("batchFinish").value
+        });
+
+
+        renderBatchPreview();
+
+        updateBatchUI();
+
+
+        /*
+          Small vibration = successful capture.
+          Unsupported devices simply ignore it.
+        */
+
+        if (
+          navigator.vibrate
+        ) {
+
+          navigator.vibrate(40);
+        }
+
+
+        const count =
+          batchSnapshots.length;
+
+
+        if (
+          count >=
+          limit
+        ) {
+
+          if (
+            navigator.vibrate
+          ) {
+
+            navigator.vibrate([
+              70,
+              60,
+              70
+            ]);
+          }
+
+
+          setStatus(
+            `Batch complete: ${count} cards ready.`
+          );
+
+        } else {
+
+          setStatus(
+            `Captured card ${count} of ${limit}.`
+          );
+        }
+      },
+
+      "image/jpeg",
+
+      0.82
+    );
+  }
+);
+
+
+updateBatchUI();
+
 // ---------- collected list ----------
 $("addBtn").addEventListener("click", () => {
   if (!currentCard) return;
