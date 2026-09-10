@@ -629,7 +629,20 @@ $("addBtn").addEventListener("click", () => {
 
   renderList();
 
-  // ---------- clear collection ----------
+  setStatus(
+    `Added ${qty}× ${c.name}` +
+    `${foil ? " (foil)" : ""} ` +
+    `[${(c.lang || "en").toUpperCase()}].`
+  );
+
+  $("candidate").style.display = "none";
+  $("suggestions").style.display = "none";
+
+  currentCard = null;
+  prints = [];
+});
+
+// ---------- clear collection ----------
 $("clearListBtn").addEventListener("click", () => {
   if (collected.length === 0) {
     setStatus("The list is already empty.");
@@ -658,18 +671,6 @@ $("clearListBtn").addEventListener("click", () => {
   setStatus("Collection cleared.");
 });
 
-  setStatus(
-    `Added ${qty}× ${c.name}` +
-    `${foil ? " (foil)" : ""} ` +
-    `[${(c.lang || "en").toUpperCase()}].`
-  );
-
-  $("candidate").style.display = "none";
-  $("suggestions").style.display = "none";
-
-  currentCard = null;
-  prints = [];
-});
 
 function renderList() {
   hideSetTip();
@@ -896,7 +897,7 @@ function showSetTip(tag) {
 
 // ---------- exports (carried over unchanged) ----------
 document
-  .querySelectorAll(".exports button")
+  .querySelectorAll(".exports button[data-fmt]")
   .forEach(
     (b) =>
       b.addEventListener(
