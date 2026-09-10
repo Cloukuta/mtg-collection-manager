@@ -149,14 +149,14 @@ Scryfall should be treated as the canonical source for card-printing metadata wh
 
 ### V1
 - [x] Base scanner
-- [ ] Reliable set/collector identification
-- [ ] Special-language/treatment handling
-- [ ] Manual exact-printing search
+- [x] Reliable set/collector identification
+- [x] Special-language/treatment handling
+- [x] Manual exact-printing search
 - [ ] Persistent collection
-- [ ] Quantity management
-- [ ] Condition
-- [ ] Foil/nonfoil
-- [ ] CSV export
+- [x] Quantity management
+- [x] Condition
+- [x] Foil/nonfoil
+- [x] CSV export
 - [ ] JSON backup/import
 
 ### V2
