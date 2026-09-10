@@ -25,8 +25,8 @@ const setStatus = (m) => { $("status").textContent = m; };
 // Hosted public tool: the Worker URL + app token ship with the app so anyone can scan out of
 // the box. The token is NOT a secret (it's public here by design and only gates the Worker,
 // which holds the real Gemini key server-side).
-const WORKER_URL = "https://mtgcardscanner.amirmag1851.workers.dev";
-const APP_TOKEN = "0c415ef93e153b9959314db675a064e9";
+const WORKER_URL = "https://mtg-collection-manager-worker.jeankarloscocos.workers.dev";
+const APP_TOKEN = "mtgcm-7d9f4c2a8e6b41f0b5d3a1c9e8f7624b";
 const getWorkerUrl = () => WORKER_URL.replace(/\/+$/, "");
 const getToken = () => APP_TOKEN;
 
