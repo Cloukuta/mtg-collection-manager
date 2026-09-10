@@ -385,9 +385,18 @@ function exportAs(fmt) {
     text = toCSV([header, ...rows]); filename = "collection_manabox.csv";
 
   } else if (fmt === "moxfield") {
-    const header = ["Count", "Name", "Edition", "Condition", "Language", "Foil", "Collector Number"];
-    const rows = collected.map((e) => [e.qty, e.card.name, e.card.set, "Near Mint", e.card.lang, e.foil ? "foil" : "", e.card.collector_number]);
-    text = toCSV([header, ...rows]); filename = "collection_moxfield.csv";
+  text = collected.map((e) => {
+    const qty = e.qty || 1;
+    const name = e.card.name || "Unknown Card";
+    const set = (e.card.set || "").toUpperCase();
+    const collectorNumber = e.card.collector_number || "";
+    const foil = e.foil ? " *F*" : "";
+
+    return `${qty} ${name} (${set}) ${collectorNumber}${foil}`;
+  }).join("\r\n");
+
+  filename = "collection_moxfield.txt";
+  mime = "text/plain;charset=utf-8";
 
   } else if (fmt === "archidekt") {
     const header = ["Quantity", "Name", "Finish", "Condition", "Edition Code", "Collector Number", "Scryfall ID"];
