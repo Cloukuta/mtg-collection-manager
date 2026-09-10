@@ -629,6 +629,35 @@ $("addBtn").addEventListener("click", () => {
 
   renderList();
 
+  // ---------- clear collection ----------
+$("clearListBtn").addEventListener("click", () => {
+  if (collected.length === 0) {
+    setStatus("The list is already empty.");
+    return;
+  }
+
+  const total = collected.reduce(
+    (n, e) => n + e.qty,
+    0
+  );
+
+  const confirmed = confirm(
+    `Delete all ${total} card${total === 1 ? "" : "s"} from the list?\n\nThis cannot be undone.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  collected.length = 0;
+
+  saveCollection();
+
+  renderList();
+
+  setStatus("Collection cleared.");
+});
+
   setStatus(
     `Added ${qty}× ${c.name}` +
     `${foil ? " (foil)" : ""} ` +
