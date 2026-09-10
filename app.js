@@ -103,6 +103,18 @@ async function identify(blob) {
         return;
 }
 const read = j.result || j;
+
+console.log("Gemini identification:", read);
+
+alert(
+  `Gemini read:\n` +
+  `Name: ${read.name}\n` +
+  `Set: ${read.set_code}\n` +
+  `Collector #: ${read.collector_number}\n` +
+  `Language: ${read.language}\n` +
+  `Confidence: ${read.confidence}`
+);
+
 await handleRead(read);
 
   } catch (e) {
