@@ -384,7 +384,7 @@ function exportAs(fmt) {
       e.foil ? "foil" : "normal", e.card.rarity, e.qty, e.card.id, "near_mint", e.card.lang]);
     text = toCSV([header, ...rows]); filename = "collection_manabox.csv";
 
-  } else if (fmt === "moxfield") {
+  } else if (fmt === "moxfield-deck") {
   text = collected.map((e) => {
     const qty = e.qty || 1;
     const name = e.card.name || "Unknown Card";
@@ -398,7 +398,12 @@ function exportAs(fmt) {
   filename = "collection_moxfield.txt";
   mime = "text/plain;charset=utf-8";
 
-  } else if (fmt === "archidekt") {
+  }else if (fmt === "moxfield") {
+  const header = ["Count", "Name", "Edition", "Condition", "Language", "Foil", "Collector Number"];
+  const rows = collected.map((e) => [e.qty, e.card.name, e.card.set, "Near Mint", e.card.lang, e.foil ? "foil" : "", e.card.collector_number]);
+  text = toCSV([header, ...rows]); filename = "collection_moxfield.csv";
+
+  }else if (fmt === "archidekt") {
     const header = ["Quantity", "Name", "Finish", "Condition", "Edition Code", "Collector Number", "Scryfall ID"];
     const rows = collected.map((e) => [e.qty, e.card.name, e.foil ? "Foil" : "Normal", "NM", e.card.set, e.card.collector_number, e.card.id]);
     text = toCSV([header, ...rows]); filename = "collection_archidekt.csv";
