@@ -2,33 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   />
-  <meta name="theme-color" content="#17181b" />
 
-  <title>MTG Card Scanner</title>
+  <meta
+    name="theme-color"
+    content="#17181b"
+  />
+
+  <title>
+    MTG Card Scanner
+  </title>
+
 
   <style>
+
     :root {
+
       color-scheme: dark;
 
       --bg: #17181b;
+
       --panel: #202227;
+
       --panel-2: #1b1d21;
+
       --line: #2b2d33;
+
       --line-2: #383b42;
 
       --text: #ededee;
+
       --muted: #9a9ba2;
+
       --faint: #6b6d74;
 
       --accent: #c2a063;
+
       --accent-ink: #201808;
-      --accent-soft: rgba(194, 160, 99, .13);
+
+      --accent-soft:
+        rgba(
+          194,
+          160,
+          99,
+          .13
+        );
 
       --danger: #d98a86;
+
+      --success: #82b98f;
 
       --font-ui:
         system-ui,
@@ -49,91 +75,189 @@
       --r: 12px;
     }
 
+
     * {
-      box-sizing: border-box;
+
+      box-sizing:
+        border-box;
     }
+
 
     html {
-      -webkit-text-size-adjust: 100%;
+
+      -webkit-text-size-adjust:
+        100%;
     }
 
+
     body {
+
       margin: 0;
-      min-height: 100dvh;
-      font-family: var(--font-ui);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+
+      min-height:
+        100dvh;
+
+      font-family:
+        var(--font-ui);
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      line-height:
+        1.5;
+
+      -webkit-font-smoothing:
+        antialiased;
     }
+
 
     /* ==============================
        TOP BAR
     ============================== */
 
+
     .topbar {
-      padding: 16px 16px 14px;
-      border-bottom: 1px solid var(--line);
+
+      padding:
+        16px 16px 14px;
+
+      border-bottom:
+        1px solid
+        var(--line);
     }
+
 
     .brand {
+
       margin: 0;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -.01em;
+
+      font-size:
+        18px;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        -.01em;
     }
 
+
     .tagline {
-      margin: 3px 0 0;
-      font-size: 13px;
-      color: var(--muted);
+
+      margin:
+        3px 0 0;
+
+      font-size:
+        13px;
+
+      color:
+        var(--muted);
     }
+
 
     /* ==============================
        MAIN
     ============================== */
 
+
     main {
-      width: min(100%, 760px);
-      margin: 0 auto;
-      padding: 14px;
+
+      width:
+        min(
+          100%,
+          760px
+        );
+
+      margin:
+        0 auto;
+
+      padding:
+        14px;
     }
+
 
     .panel {
-      margin-bottom: 14px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--panel);
+
+      margin-bottom:
+        14px;
+
+      padding:
+        16px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--panel);
     }
 
+
     .panel-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 0 0 14px;
-      font-size: 15px;
-      font-weight: 650;
+
+      display:
+        flex;
+
+      align-items:
+        baseline;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      margin:
+        0 0 14px;
+
+      font-size:
+        15px;
+
+      font-weight:
+        650;
     }
+
 
     /* ==============================
        BUTTONS
     ============================== */
 
+
     button {
-      font: inherit;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
 
-      padding: 14px 16px;
+      font:
+        inherit;
 
-      border: 1px solid transparent;
-      border-radius: 10px;
+      font-size:
+        16px;
 
-      color: var(--text);
-      background: #2a2d34;
+      font-weight:
+        600;
+
+      cursor:
+        pointer;
+
+      padding:
+        14px 16px;
+
+      border:
+        1px solid
+        transparent;
+
+      border-radius:
+        10px;
+
+      color:
+        var(--text);
+
+      background:
+        #2a2d34;
 
       transition:
         background .12s ease,
@@ -141,891 +265,1856 @@
         color .12s ease;
     }
 
+
     button:hover:not(:disabled) {
-      background: #31343c;
+
+      background:
+        #31343c;
     }
+
 
     button:disabled {
-      opacity: .4;
-      cursor: not-allowed;
+
+      opacity:
+        .4;
+
+      cursor:
+        not-allowed;
     }
+
 
     button.primary {
-      color: var(--accent-ink);
-      background: var(--accent);
-      border-color: var(--accent);
+
+      color:
+        var(--accent-ink);
+
+      background:
+        var(--accent);
+
+      border-color:
+        var(--accent);
     }
+
 
     button.primary:hover:not(:disabled) {
-      background: #cdac6f;
+
+      background:
+        #cdac6f;
     }
+
 
     button.ghost {
-      background: transparent;
-      border-color: var(--line-2);
+
+      background:
+        transparent;
+
+      border-color:
+        var(--line-2);
     }
+
 
     button.ghost:hover:not(:disabled) {
-      background: rgba(255, 255, 255, .03);
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .03
+        );
     }
 
+
     :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+
+      outline:
+        2px solid
+        var(--accent);
+
+      outline-offset:
+        2px;
     }
+
 
     /* ==============================
        SHARED CAMERA
     ============================== */
 
+
     .stage {
-      position: relative;
 
-      width: 100%;
-      aspect-ratio: 3 / 4;
+      position:
+        relative;
 
-      overflow: hidden;
+      width:
+        100%;
 
-      border: 1px solid var(--line-2);
-      border-radius: 10px;
+      aspect-ratio:
+        3 / 4;
 
-      background: #000;
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--line-2);
+
+      border-radius:
+        10px;
+
+      background:
+        #000;
     }
+
 
     video,
     .stage canvas {
-      position: absolute;
-      inset: 0;
 
-      width: 100%;
-      height: 100%;
+      position:
+        absolute;
 
-      object-fit: cover;
+      inset:
+        0;
+
+      width:
+        100%;
+
+      height:
+        100%;
+
+      object-fit:
+        cover;
     }
+
 
     .overlay {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+
+      position:
+        absolute;
+
+      inset:
+        0;
+
+      pointer-events:
+        none;
     }
+
 
     .cardbox {
-      position: absolute;
 
-      left: 50%;
-      top: 50%;
+      position:
+        absolute;
 
-      height: 86%;
-      aspect-ratio: 63 / 88;
+      left:
+        50%;
 
-      transform: translate(-50%, -50%);
+      top:
+        50%;
 
-      border: 1px solid rgba(255, 255, 255, .28);
-      border-radius: 6px;
+      height:
+        86%;
+
+      aspect-ratio:
+        63 / 88;
+
+      transform:
+        translate(
+          -50%,
+          -50%
+        );
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          .28
+        );
+
+      border-radius:
+        6px;
     }
+
 
     .corner {
-      position: absolute;
 
-      width: 22px;
-      height: 22px;
+      position:
+        absolute;
 
-      border: 2px solid rgba(255, 255, 255, .8);
+      width:
+        22px;
+
+      height:
+        22px;
+
+      border:
+        2px solid
+        rgba(
+          255,
+          255,
+          255,
+          .8
+        );
     }
+
 
     .corner.tl {
-      top: -1px;
-      left: -1px;
 
-      border-right: 0;
-      border-bottom: 0;
-      border-top-left-radius: 6px;
+      top:
+        -1px;
+
+      left:
+        -1px;
+
+      border-right:
+        0;
+
+      border-bottom:
+        0;
+
+      border-top-left-radius:
+        6px;
     }
+
 
     .corner.tr {
-      top: -1px;
-      right: -1px;
 
-      border-left: 0;
-      border-bottom: 0;
-      border-top-right-radius: 6px;
+      top:
+        -1px;
+
+      right:
+        -1px;
+
+      border-left:
+        0;
+
+      border-bottom:
+        0;
+
+      border-top-right-radius:
+        6px;
     }
+
 
     .corner.bl {
-      bottom: -1px;
-      left: -1px;
 
-      border-right: 0;
-      border-top: 0;
-      border-bottom-left-radius: 6px;
+      bottom:
+        -1px;
+
+      left:
+        -1px;
+
+      border-right:
+        0;
+
+      border-top:
+        0;
+
+      border-bottom-left-radius:
+        6px;
     }
+
 
     .corner.br {
-      right: -1px;
-      bottom: -1px;
 
-      border-left: 0;
-      border-top: 0;
-      border-bottom-right-radius: 6px;
+      right:
+        -1px;
+
+      bottom:
+        -1px;
+
+      border-left:
+        0;
+
+      border-top:
+        0;
+
+      border-bottom-right-radius:
+        6px;
     }
+
 
     .hint {
-      position: absolute;
 
-      left: 0;
-      right: 0;
-      bottom: 8px;
+      position:
+        absolute;
 
-      padding: 0 12px;
+      left:
+        0;
 
-      text-align: center;
-      font-size: 12.5px;
+      right:
+        0;
 
-      color: rgba(255, 255, 255, .82);
-      text-shadow: 0 1px 3px #000;
+      bottom:
+        8px;
 
-      transition: opacity .2s ease;
+      padding:
+        0 12px;
+
+      text-align:
+        center;
+
+      font-size:
+        12.5px;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          .82
+        );
+
+      text-shadow:
+        0 1px 3px
+        #000;
+
+      transition:
+        opacity .2s ease;
     }
+
 
     body.scanning .stage {
-      opacity: .5;
+
+      opacity:
+        .5;
     }
+
 
     body.scanning .hint {
-      opacity: 0;
+
+      opacity:
+        0;
     }
+
 
     .camera-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
 
-      margin-top: 14px;
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        10px;
+
+      margin-top:
+        14px;
     }
+
 
     .statusbar {
-      display: flex;
-      align-items: center;
-      gap: 9px;
 
-      min-height: 20px;
-      margin-top: 12px;
+      display:
+        flex;
 
-      font-size: 13.5px;
-      color: var(--muted);
+      align-items:
+        center;
+
+      gap:
+        9px;
+
+      min-height:
+        20px;
+
+      margin-top:
+        12px;
+
+      font-size:
+        13.5px;
+
+      color:
+        var(--muted);
     }
+
 
     .spinner {
-      display: none;
 
-      width: 15px;
-      height: 15px;
+      display:
+        none;
 
-      flex: none;
+      width:
+        15px;
 
-      border: 2px solid var(--line-2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
+      height:
+        15px;
 
-      animation: spin .7s linear infinite;
+      flex:
+        none;
+
+      border:
+        2px solid
+        var(--line-2);
+
+      border-top-color:
+        var(--accent);
+
+      border-radius:
+        50%;
+
+      animation:
+        spin .7s
+        linear
+        infinite;
     }
+
 
     body.scanning .spinner {
-      display: inline-block;
+
+      display:
+        inline-block;
     }
 
+
     @keyframes spin {
+
       to {
-        transform: rotate(360deg);
+
+        transform:
+          rotate(
+            360deg
+          );
       }
     }
 
+
     /* ==============================
-       APP SECTIONS / ACCORDION
+       ACCORDION
     ============================== */
 
+
     .app-sections {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        10px;
     }
+
 
     .app-section {
-      overflow: hidden;
 
-      border: 1px solid var(--line);
-      border-radius: 12px;
+      overflow:
+        hidden;
 
-      background: var(--panel);
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:
+        12px;
+
+      background:
+        var(--panel);
     }
+
 
     .section-toggle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
 
-      width: 100%;
+      display:
+        flex;
 
-      padding: 14px 16px;
+      align-items:
+        center;
 
-      border: 0;
-      border-radius: 0;
+      gap:
+        10px;
 
-      text-align: left;
+      width:
+        100%;
 
-      color: var(--text);
-      background: transparent;
+      padding:
+        14px 16px;
+
+      border:
+        0;
+
+      border-radius:
+        0;
+
+      text-align:
+        left;
+
+      color:
+        var(--text);
+
+      background:
+        transparent;
     }
+
 
     .section-toggle:hover:not(:disabled) {
-      background: var(--panel-2);
+
+      background:
+        var(--panel-2);
     }
+
 
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
 
-      font-size: 15px;
-      font-weight: 700;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      font-size:
+        15px;
+
+      font-weight:
+        700;
     }
+
 
     .section-summary {
-      margin-left: auto;
 
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 500;
+      margin-left:
+        auto;
 
-      color: var(--muted);
+      font-family:
+        var(--font-mono);
+
+      font-size:
+        12px;
+
+      font-weight:
+        500;
+
+      color:
+        var(--muted);
     }
+
 
     .section-arrow {
-      margin-left: 2px;
 
-      font-size: 20px;
-      line-height: 1;
+      margin-left:
+        2px;
 
-      color: var(--muted);
+      font-size:
+        20px;
 
-      transition: transform .14s ease;
+      line-height:
+        1;
+
+      color:
+        var(--muted);
+
+      transition:
+        transform .14s ease;
     }
 
-    .app-section.open .section-arrow {
-      transform: rotate(90deg);
+
+    .app-section.open
+    .section-arrow {
+
+      transform:
+        rotate(
+          90deg
+        );
     }
+
 
     .section-content {
-      display: none;
 
-      padding: 0 14px 14px;
-      border-top: 1px solid transparent;
+      display:
+        none;
+
+      padding:
+        0 14px 14px;
+
+      border-top:
+        1px solid
+        transparent;
     }
 
-    .app-section.open .section-content {
-      display: block;
-      border-top-color: var(--line);
-      padding-top: 14px;
+
+    .app-section.open
+    .section-content {
+
+      display:
+        block;
+
+      padding-top:
+        14px;
+
+      border-top-color:
+        var(--line);
     }
+
 
     /* ==============================
        SINGLE SCAN
     ============================== */
 
+
     .single-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr;
+
+      gap:
+        10px;
     }
+
 
     #captureBtn {
-      width: 100%;
+
+      width:
+        100%;
     }
+
 
     .preview {
-      position: relative;
 
-      display: inline-block;
+      position:
+        relative;
 
-      width: 100%;
-      max-width: 180px;
+      display:
+        inline-block;
 
-      margin-top: 12px;
+      width:
+        100%;
 
-      vertical-align: top;
+      max-width:
+        180px;
+
+      margin-top:
+        12px;
+
+      vertical-align:
+        top;
     }
+
 
     #capPreview {
-      width: 100%;
 
-      border: 1px solid var(--line-2);
-      border-radius: 8px;
+      width:
+        100%;
 
-      background: #000;
+      border:
+        1px solid
+        var(--line-2);
+
+      border-radius:
+        8px;
+
+      background:
+        #000;
     }
+
 
     .scanline {
-      position: absolute;
 
-      left: 0;
-      right: 0;
-      top: 0;
+      position:
+        absolute;
 
-      height: 2px;
+      left:
+        0;
 
-      opacity: 0;
-      background: rgba(255, 255, 255, .85);
+      right:
+        0;
+
+      top:
+        0;
+
+      height:
+        2px;
+
+      opacity:
+        0;
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          .85
+        );
     }
+
 
     body.scanning .scanline {
-      animation: sweep 1.3s ease-in-out infinite;
+
+      animation:
+        sweep 1.3s
+        ease-in-out
+        infinite;
     }
+
 
     @keyframes sweep {
+
       0% {
-        top: 4%;
-        opacity: 0;
+
+        top:
+          4%;
+
+        opacity:
+          0;
       }
+
 
       20% {
-        opacity: .9;
+
+        opacity:
+          .9;
       }
+
 
       80% {
-        opacity: .9;
+
+        opacity:
+          .9;
       }
 
+
       100% {
-        top: 96%;
-        opacity: 0;
+
+        top:
+          96%;
+
+        opacity:
+          0;
       }
     }
+
 
     /* ==============================
        CARD RESULT
     ============================== */
 
+
     #candidate {
-      display: none;
 
-      gap: 14px;
+      display:
+        none;
 
-      margin-top: 18px;
-      padding-top: 18px;
+      gap:
+        14px;
 
-      border-top: 1px solid var(--line);
+      margin-top:
+        18px;
 
-      align-items: flex-start;
+      padding-top:
+        18px;
+
+      border-top:
+        1px solid
+        var(--line);
+
+      align-items:
+        flex-start;
     }
+
 
     #candImg {
-      width: 96px;
-      height: auto;
 
-      aspect-ratio: 63 / 88;
+      width:
+        96px;
 
-      object-fit: cover;
+      height:
+        auto;
 
-      flex: none;
-      align-self: flex-start;
+      aspect-ratio:
+        63 / 88;
 
-      border-radius: 8px;
+      object-fit:
+        cover;
 
-      background: #000;
+      flex:
+        none;
+
+      align-self:
+        flex-start;
+
+      border-radius:
+        8px;
+
+      background:
+        #000;
     }
+
 
     #candidate .meta {
-      flex: 1;
-      min-width: 0;
+
+      flex:
+        1;
+
+      min-width:
+        0;
     }
+
 
     #candName {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -.01em;
+
+      font-size:
+        17px;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        -.01em;
     }
+
 
     #candSub {
-      margin-top: 3px;
 
-      font-size: 13px;
-      color: var(--muted);
+      margin-top:
+        3px;
+
+      font-size:
+        13px;
+
+      color:
+        var(--muted);
     }
+
 
     #candRead {
-      margin-top: 6px;
 
-      font-family: var(--font-mono);
-      font-size: 11.5px;
+      margin-top:
+        6px;
 
-      color: var(--faint);
+      font-family:
+        var(--font-mono);
 
-      word-break: break-word;
+      font-size:
+        11.5px;
+
+      color:
+        var(--faint);
+
+      word-break:
+        break-word;
     }
+
 
     .row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        10px;
     }
+
 
     input[type=text],
     input[type=number],
     select {
-      min-height: 46px;
 
-      padding: 11px 12px;
+      min-height:
+        46px;
 
-      border: 1px solid var(--line-2);
-      border-radius: 9px;
+      padding:
+        11px 12px;
 
-      font: inherit;
-      font-size: 16px;
+      border:
+        1px solid
+        var(--line-2);
 
-      color: var(--text);
-      background: var(--panel-2);
+      border-radius:
+        9px;
+
+      font:
+        inherit;
+
+      font-size:
+        16px;
+
+      color:
+        var(--text);
+
+      background:
+        var(--panel-2);
     }
+
 
     input[type=number] {
-      width: 72px;
+
+      width:
+        72px;
     }
+
 
     .fld {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      gap: 5px;
 
-      min-width: 140px;
+      display:
+        flex;
 
-      font-size: 12px;
-      color: var(--muted);
+      flex:
+        1;
+
+      flex-direction:
+        column;
+
+      gap:
+        5px;
+
+      min-width:
+        140px;
+
+      font-size:
+        12px;
+
+      color:
+        var(--muted);
     }
+
 
     .chk {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
 
-      font-size: 15px;
-      color: var(--muted);
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      font-size:
+        15px;
+
+      color:
+        var(--muted);
     }
+
 
     .chk input[type=checkbox] {
-      width: 21px;
-      height: 21px;
 
-      accent-color: var(--accent);
+      width:
+        21px;
+
+      height:
+        21px;
+
+      accent-color:
+        var(--accent);
     }
+
 
     .chk:has(#foilChk:checked) {
-      color: var(--accent);
+
+      color:
+        var(--accent);
     }
+
 
     /* ==============================
        RAPID BATCH
     ============================== */
 
+
     .batch-settings {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        10px;
     }
+
 
     .batch-settings label {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
 
-      font-size: 12px;
-      color: var(--muted);
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        6px;
+
+      font-size:
+        12px;
+
+      color:
+        var(--muted);
     }
+
 
     .batch-settings select {
-      width: 100%;
+
+      width:
+        100%;
     }
+
 
     .batch-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
 
-      margin-top: 12px;
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap:
+        8px;
+
+      margin-top:
+        12px;
     }
+
 
     #startBatchBtn {
-      grid-column: 1 / -1;
+
+      grid-column:
+        1 / -1;
     }
+
 
     .batch-counter {
-      margin-top: 14px;
 
-      text-align: center;
+      margin-top:
+        14px;
 
-      font-family: var(--font-mono);
-      font-size: 24px;
-      font-weight: 700;
+      text-align:
+        center;
 
-      color: var(--accent);
+      font-family:
+        var(--font-mono);
+
+      font-size:
+        24px;
+
+      font-weight:
+        700;
+
+      color:
+        var(--accent);
     }
+
 
     .batch-preview {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
 
-      margin-top: 12px;
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          3,
+          1fr
+        );
+
+      gap:
+        6px;
+
+      margin-top:
+        12px;
     }
+
 
     .batch-preview-item {
-      position: relative;
+
+      position:
+        relative;
     }
+
 
     .batch-preview img {
-      display: block;
 
-      width: 100%;
-      aspect-ratio: 63 / 88;
+      display:
+        block;
 
-      object-fit: cover;
+      width:
+        100%;
 
-      border: 1px solid var(--line-2);
-      border-radius: 7px;
+      aspect-ratio:
+        63 / 88;
+
+      object-fit:
+        cover;
+
+      border:
+        1px solid
+        var(--line-2);
+
+      border-radius:
+        7px;
     }
+
 
     .batch-preview-number {
-      position: absolute;
 
-      top: 4px;
-      left: 4px;
+      position:
+        absolute;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      top:
+        4px;
 
-      min-width: 22px;
-      height: 22px;
+      left:
+        4px;
 
-      border-radius: 50%;
+      display:
+        flex;
 
-      font-size: 11px;
-      font-weight: 700;
+      align-items:
+        center;
 
-      color: #fff;
-      background: rgba(0, 0, 0, .78);
+      justify-content:
+        center;
+
+      min-width:
+        22px;
+
+      height:
+        22px;
+
+      border-radius:
+        50%;
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+
+      color:
+        #fff;
+
+      background:
+        rgba(
+          0,
+          0,
+          0,
+          .78
+        );
     }
+
+
+    .batch-identify-actions {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr;
+
+      gap:
+        8px;
+
+      margin-top:
+        14px;
+    }
+
+
+    #identifyBatchBtn {
+
+      width:
+        100%;
+    }
+
+
+    #addBatchBtn {
+
+      display:
+        none;
+
+      width:
+        100%;
+    }
+
+
+    #batchResults {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        8px;
+
+      margin-top:
+        14px;
+    }
+
+
+    .batch-result {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        52px 1fr;
+
+      gap:
+        10px;
+
+      align-items:
+        center;
+
+      padding:
+        9px;
+
+      border:
+        1px solid
+        var(--line);
+
+      border-radius:
+        10px;
+
+      background:
+        var(--panel-2);
+    }
+
+
+    .batch-result.ok {
+
+      border-color:
+        rgba(
+          130,
+          185,
+          143,
+          .4
+        );
+    }
+
+
+    .batch-result.bad {
+
+      border-color:
+        rgba(
+          217,
+          138,
+          134,
+          .45
+        );
+    }
+
+
+    .batch-result img {
+
+      width:
+        52px;
+
+      aspect-ratio:
+        63 / 88;
+
+      object-fit:
+        cover;
+
+      border-radius:
+        5px;
+
+      background:
+        #000;
+    }
+
+
+    .batch-result-name {
+
+      font-size:
+        14px;
+
+      font-weight:
+        700;
+    }
+
+
+    .batch-result-sub {
+
+      margin-top:
+        2px;
+
+      font-family:
+        var(--font-mono);
+
+      font-size:
+        11px;
+
+      color:
+        var(--muted);
+
+      word-break:
+        break-word;
+    }
+
 
     /* ==============================
-       COLLECTION TABLE
+       COLLECTION
     ============================== */
 
+
     .twrap {
-      overflow-x: auto;
+
+      overflow-x:
+        auto;
     }
+
 
     table {
-      width: 100%;
 
-      border-collapse: collapse;
+      width:
+        100%;
 
-      font-size: 14px;
+      border-collapse:
+        collapse;
+
+      font-size:
+        14px;
     }
+
 
     th,
     td {
-      padding: 11px 8px;
 
-      border-bottom: 1px solid var(--line);
+      padding:
+        11px 8px;
 
-      text-align: left;
-      white-space: nowrap;
+      border-bottom:
+        1px solid
+        var(--line);
+
+      text-align:
+        left;
+
+      white-space:
+        nowrap;
     }
+
 
     th {
-      font-size: 11px;
-      font-weight: 600;
 
-      color: var(--muted);
+      font-size:
+        11px;
 
-      text-transform: uppercase;
-      letter-spacing: .05em;
+      font-weight:
+        600;
+
+      color:
+        var(--muted);
+
+      text-transform:
+        uppercase;
+
+      letter-spacing:
+        .05em;
     }
+
 
     td.num,
     th.num {
-      width: 34px;
 
-      text-align: right;
-      font-family: var(--font-mono);
+      width:
+        34px;
+
+      text-align:
+        right;
+
+      font-family:
+        var(--font-mono);
     }
+
 
     td:nth-child(3) {
-      white-space: normal;
+
+      white-space:
+        normal;
     }
+
 
     .thumb {
-      width: 40px;
-      padding: 7px 4px 7px 8px;
+
+      width:
+        40px;
+
+      padding:
+        7px 4px 7px 8px;
     }
+
 
     .thumb img {
-      display: block;
 
-      width: 40px;
-      height: auto;
+      display:
+        block;
 
-      aspect-ratio: 63 / 88;
+      width:
+        40px;
 
-      object-fit: cover;
+      height:
+        auto;
 
-      border-radius: 4px;
+      aspect-ratio:
+        63 / 88;
 
-      background: #000;
+      object-fit:
+        cover;
+
+      border-radius:
+        4px;
+
+      background:
+        #000;
     }
+
 
     .setcell {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
 
-      color: var(--muted);
+      font-family:
+        var(--font-mono);
+
+      font-size:
+        12.5px;
+
+      color:
+        var(--muted);
     }
+
 
     .settag {
-      cursor: help;
-      border-bottom: 1px dotted var(--line-2);
+
+      cursor:
+        help;
+
+      border-bottom:
+        1px dotted
+        var(--line-2);
     }
+
 
     .settag:focus-visible {
-      border-radius: 2px;
 
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+      border-radius:
+        2px;
+
+      outline:
+        2px solid
+        var(--accent);
+
+      outline-offset:
+        2px;
     }
 
+
     .settip {
-      position: fixed;
-      z-index: 60;
 
-      max-width: 240px;
+      position:
+        fixed;
 
-      padding: 6px 10px;
+      z-index:
+        60;
 
-      pointer-events: none;
+      max-width:
+        240px;
 
-      border: 1px solid var(--line-2);
-      border-radius: 8px;
+      padding:
+        6px 10px;
 
-      font-size: 13px;
-      line-height: 1.35;
+      pointer-events:
+        none;
 
-      color: var(--text);
-      background: var(--panel-2);
+      border:
+        1px solid
+        var(--line-2);
 
-      box-shadow: 0 10px 28px -12px #000;
+      border-radius:
+        8px;
 
-      opacity: 0;
-      transform: translateY(3px);
+      font-size:
+        13px;
+
+      line-height:
+        1.35;
+
+      color:
+        var(--text);
+
+      background:
+        var(--panel-2);
+
+      box-shadow:
+        0 10px 28px -12px
+        #000;
+
+      opacity:
+        0;
+
+      transform:
+        translateY(
+          3px
+        );
 
       transition:
         opacity .12s ease,
         transform .12s ease;
     }
 
+
     .settip.show {
-      opacity: 1;
-      transform: translateY(0);
+
+      opacity:
+        1;
+
+      transform:
+        translateY(
+          0
+        );
     }
+
 
     tbody tr:last-child td {
-      border-bottom: 0;
+
+      border-bottom:
+        0;
     }
+
 
     .remove {
-      min-height: 0;
 
-      padding: 6px 8px;
+      min-height:
+        0;
 
-      border: 0;
+      padding:
+        6px 8px;
 
-      font-size: 16px;
-      line-height: 1;
+      border:
+        0;
 
-      color: var(--faint);
-      background: transparent;
+      font-size:
+        16px;
+
+      line-height:
+        1;
+
+      color:
+        var(--faint);
+
+      background:
+        transparent;
     }
+
 
     .remove:hover:not(:disabled) {
-      color: var(--danger);
-      background: transparent;
+
+      color:
+        var(--danger);
+
+      background:
+        transparent;
     }
+
 
     .empty {
-      padding: 30px 14px;
 
-      border: 1px dashed var(--line-2);
-      border-radius: 12px;
+      padding:
+        30px 14px;
 
-      text-align: center;
-      font-size: 14px;
+      border:
+        1px dashed
+        var(--line-2);
 
-      color: var(--faint);
+      border-radius:
+        12px;
+
+      text-align:
+        center;
+
+      font-size:
+        14px;
+
+      color:
+        var(--faint);
     }
+
 
     .empty b {
-      font-weight: 600;
-      color: var(--muted);
+
+      font-weight:
+        600;
+
+      color:
+        var(--muted);
     }
+
 
     .collection-actions {
-      display: flex;
-      justify-content: flex-end;
 
-      margin-top: 14px;
+      display:
+        flex;
+
+      justify-content:
+        flex-end;
+
+      margin-top:
+        14px;
     }
+
 
     #clearListBtn {
-      color: var(--danger);
+
+      color:
+        var(--danger);
     }
+
 
     /* ==============================
        EXPORTS
     ============================== */
 
+
     .exports {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
     }
+
 
     .exports button {
-      padding: 10px 13px;
 
-      border: 1px solid var(--line-2);
+      padding:
+        10px 13px;
 
-      font-size: 13px;
-      font-weight: 600;
+      border:
+        1px solid
+        var(--line-2);
 
-      background: transparent;
+      font-size:
+        13px;
+
+      font-weight:
+        600;
+
+      background:
+        transparent;
     }
+
 
     .exports button:hover:not(:disabled) {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: transparent;
+
+      color:
+        var(--accent);
+
+      border-color:
+        var(--accent);
+
+      background:
+        transparent;
     }
+
 
     a.dl {
-      display: none;
+
+      display:
+        none;
     }
+
 
     .note {
-      margin: 14px 0 0;
 
-      font-size: 12.5px;
-      line-height: 1.5;
+      margin:
+        14px 0 0;
 
-      color: var(--faint);
+      font-size:
+        12.5px;
+
+      line-height:
+        1.5;
+
+      color:
+        var(--faint);
     }
+
 
     code {
-      padding: 1px 6px;
 
-      border-radius: 5px;
+      padding:
+        1px 6px;
 
-      font-family: var(--font-mono);
-      font-size: .92em;
+      border-radius:
+        5px;
 
-      background: var(--panel-2);
+      font-family:
+        var(--font-mono);
+
+      font-size:
+        .92em;
+
+      background:
+        var(--panel-2);
     }
+
 
     /* ==============================
        DESKTOP
     ============================== */
 
-    @media (min-width: 861px) {
+
+    @media (
+      min-width: 861px
+    ) {
+
       main {
-        width: min(100%, 980px);
-        padding: 22px;
+
+        width:
+          min(
+            100%,
+            980px
+          );
+
+        padding:
+          22px;
       }
+
 
       .stage {
-        aspect-ratio: 4 / 3;
+
+        aspect-ratio:
+          4 / 3;
       }
 
-      .camera-actions {
-        grid-template-columns: 1fr 1fr;
-      }
 
       button {
-        padding: 11px 16px;
-        font-size: 15px;
+
+        padding:
+          11px 16px;
+
+        font-size:
+          15px;
       }
+
 
       .exports button {
-        padding: 9px 13px;
+
+        padding:
+          9px 13px;
       }
     }
 
-    @media (max-width: 520px) {
+
+    @media (
+      max-width: 520px
+    ) {
+
       .batch-settings {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
       }
+
 
       #candidate {
-        flex-direction: column;
+
+        flex-direction:
+          column;
       }
+
 
       #candImg {
-        width: 120px;
+
+        width:
+          120px;
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      body.scanning .scanline {
-        top: 50%;
-        opacity: .8;
-        animation: none;
+
+    @media (
+      prefers-reduced-motion:
+      reduce
+    ) {
+
+      body.scanning
+      .scanline {
+
+        top:
+          50%;
+
+        opacity:
+          .8;
+
+        animation:
+          none;
       }
+
 
       .spinner {
-        animation: none;
+
+        animation:
+          none;
       }
 
+
       .section-arrow {
-        transition: none;
+
+        transition:
+          none;
       }
     }
+
   </style>
 </head>
 
+
 <body>
 
+
   <header class="topbar">
+
     <h1 class="brand">
       MTG Card Scanner
     </h1>
 
+
     <p class="tagline">
       Scan a card, confirm the printing, export your list.
     </p>
+
   </header>
 
 
   <main>
 
+
     <!-- ============================
          SHARED CAMERA
     ============================= -->
 
+
     <section class="panel">
 
+
       <div class="panel-head">
-        <span>Camera</span>
+
+        <span>
+          Camera
+        </span>
+
       </div>
 
 
       <div class="stage">
+
 
         <video
           id="video"
@@ -1036,11 +2125,15 @@
 
         <div class="overlay">
 
+
           <div class="cardbox">
 
             <span class="corner tl"></span>
+
             <span class="corner tr"></span>
+
             <span class="corner bl"></span>
+
             <span class="corner br"></span>
 
           </div>
@@ -1050,21 +2143,28 @@
             class="hint"
             id="hint"
           >
+
             Fit the whole card inside the frame
+
           </div>
 
+
         </div>
+
 
       </div>
 
 
       <div class="camera-actions">
 
+
         <button
           id="startBtn"
           class="ghost"
         >
+
           Start camera
+
         </button>
 
 
@@ -1073,13 +2173,17 @@
           class="ghost"
           disabled
         >
+
           Refresh camera
+
         </button>
+
 
       </div>
 
 
       <div class="statusbar">
+
 
         <span
           class="spinner"
@@ -1087,29 +2191,38 @@
           aria-hidden="true"
         ></span>
 
+
         <span id="status">
+
           Start the camera to begin.
+
         </span>
 
+
       </div>
+
 
     </section>
 
 
     <!-- ============================
-         APP SECTIONS
+         ACCORDION
     ============================= -->
 
+
     <div class="app-sections">
+
 
       <!-- ============================
            SINGLE SCAN
       ============================= -->
 
+
       <section
         class="app-section open"
         data-app-section="single"
       >
+
 
         <button
           class="section-toggle"
@@ -1117,35 +2230,49 @@
           aria-expanded="true"
         >
 
+
           <span class="section-title">
+
             📷 Single Scan
+
           </span>
 
+
           <span class="section-arrow">
+
             ›
+
           </span>
+
 
         </button>
 
 
         <div class="section-content">
 
+
           <div class="single-actions">
+
 
             <button
               id="captureBtn"
               class="primary"
               disabled
             >
+
               Capture &amp; identify
+
             </button>
+
 
           </div>
 
 
           <!-- CAPTURE PREVIEW -->
 
+
           <div class="preview">
+
 
             <canvas
               id="capPreview"
@@ -1153,17 +2280,23 @@
               style="display:none"
             ></canvas>
 
+
             <span
               class="scanline"
               aria-hidden="true"
             ></span>
 
+
           </div>
 
 
-          <!-- CARD RESULT -->
+          <!-- ============================
+               CARD RESULT
+          ============================= -->
+
 
           <div id="candidate">
+
 
             <img
               id="candImg"
@@ -1173,23 +2306,32 @@
 
             <div class="meta">
 
+
               <div id="candName">
+
                 —
+
               </div>
 
+
               <div id="candSub">
+
                 —
+
               </div>
+
 
               <div id="candRead"></div>
 
 
               <!-- MANUAL CORRECTION -->
 
+
               <div
                 class="row"
                 style="margin-top:12px"
               >
+
 
                 <input
                   type="text"
@@ -1198,12 +2340,16 @@
                   style="flex:1"
                 />
 
+
                 <button
                   id="searchBtn"
                   class="ghost"
                 >
+
                   Search
+
                 </button>
+
 
               </div>
 
@@ -1211,72 +2357,104 @@
               <div
                 id="suggestions"
                 class="row"
-                style="display:none; margin-top:10px"
+                style="
+                  display:none;
+                  margin-top:10px
+                "
               ></div>
 
 
               <!-- PRINTING / LANGUAGE -->
+
 
               <div
                 class="row"
                 style="margin-top:12px"
               >
 
+
                 <label
                   class="fld"
-                  style="flex:0 0 auto; min-width:88px"
+                  style="
+                    flex:0 0 auto;
+                    min-width:88px
+                  "
                 >
+
 
                   Language
 
+
                   <select id="langSelect">
+
                     <option value="">
+
                       —
+
                     </option>
+
                   </select>
+
 
                 </label>
 
 
                 <label class="fld">
 
+
                   Printing
 
+
                   <select id="printingSelect">
+
                     <option value="">
+
                       —
+
                     </option>
+
                   </select>
 
+
                 </label>
+
 
               </div>
 
 
               <!-- FOIL / QTY / ADD -->
 
+
               <div
                 class="row"
                 style="margin-top:12px"
               >
 
+
                 <label class="chk">
+
 
                   <input
                     type="checkbox"
                     id="foilChk"
                   />
 
+
                   <span>
+
                     Foil
+
                   </span>
+
 
                 </label>
 
 
                 <label class="chk">
 
+
                   Qty
+
 
                   <input
                     type="number"
@@ -1284,6 +2462,7 @@
                     value="1"
                     min="1"
                   />
+
 
                 </label>
 
@@ -1294,16 +2473,23 @@
                   disabled
                   style="margin-left:auto"
                 >
+
                   Add to list
+
                 </button>
+
 
               </div>
 
+
             </div>
+
 
           </div>
 
+
         </div>
+
 
       </section>
 
@@ -1312,10 +2498,12 @@
            RAPID BATCH
       ============================= -->
 
+
       <section
         class="app-section"
         data-app-section="batch"
       >
+
 
         <button
           class="section-toggle"
@@ -1323,102 +2511,156 @@
           aria-expanded="false"
         >
 
+
           <span class="section-title">
+
             ⚡ Rapid Batch
+
           </span>
+
 
           <span
             class="section-summary"
             id="batchSectionSummary"
           >
+
             0 / 6
+
           </span>
 
+
           <span class="section-arrow">
+
             ›
+
           </span>
+
 
         </button>
 
 
         <div class="section-content">
 
+
           <div class="batch-settings">
+
 
             <label>
 
+
               Finish
+
 
               <select id="batchFinish">
 
+
                 <option value="nonfoil">
+
                   Non-foil
+
                 </option>
+
 
                 <option value="foil">
+
                   Foil
+
                 </option>
+
 
                 <option value="etched">
+
                   Etched Foil
+
                 </option>
+
 
                 <option value="surgefoil">
+
                   Surge Foil
+
                 </option>
+
 
                 <option value="galaxyfoil">
+
                   Galaxy Foil
+
                 </option>
+
 
                 <option value="textured">
+
                   Textured Foil
+
                 </option>
+
 
                 <option value="review">
+
                   Other / Review
+
                 </option>
 
+
               </select>
+
 
             </label>
 
 
             <label>
 
+
               Batch size
+
 
               <select id="batchSize">
 
+
                 <option value="4">
+
                   4 cards
+
                 </option>
+
 
                 <option
                   value="6"
                   selected
                 >
+
                   6 cards
+
                 </option>
 
+
                 <option value="8">
+
                   8 cards
+
                 </option>
+
 
               </select>
 
+
             </label>
+
 
           </div>
 
 
           <div class="batch-actions">
 
+
             <button
               id="startBatchBtn"
               class="ghost"
             >
+
               Start batch
+
             </button>
 
 
@@ -1427,7 +2669,9 @@
               class="primary"
               disabled
             >
+
               Capture card
+
             </button>
 
 
@@ -1436,8 +2680,11 @@
               class="ghost"
               disabled
             >
+
               Clear batch
+
             </button>
+
 
           </div>
 
@@ -1446,7 +2693,9 @@
             id="batchCounter"
             class="batch-counter"
           >
+
             0 / 6
+
           </div>
 
 
@@ -1456,12 +2705,54 @@
           ></div>
 
 
+          <!-- IDENTIFY BATCH -->
+
+
+          <div class="batch-identify-actions">
+
+
+            <button
+              id="identifyBatchBtn"
+              class="primary"
+              disabled
+            >
+
+              Identify batch
+
+            </button>
+
+
+            <button
+              id="addBatchBtn"
+              class="ghost"
+              disabled
+            >
+
+              Add valid cards
+
+            </button>
+
+
+          </div>
+
+
+          <!-- BATCH RESULTS -->
+
+
+          <div id="batchResults"></div>
+
+
+          <!-- CONTACT SHEET -->
+
+
           <canvas
             id="batchSheet"
             style="display:none"
           ></canvas>
 
+
         </div>
+
 
       </section>
 
@@ -1470,10 +2761,12 @@
            COLLECTION
       ============================= -->
 
+
       <section
         class="app-section"
         data-app-section="collection"
       >
+
 
         <button
           class="section-toggle"
@@ -1481,98 +2774,155 @@
           aria-expanded="false"
         >
 
+
           <span class="section-title">
+
             📦 Collection
+
           </span>
+
 
           <span class="section-summary">
-            <span id="count">0</span>
+
+
+            <span id="count">
+
+              0
+
+            </span>
+
             total
+
+
           </span>
 
+
           <span class="section-arrow">
+
             ›
+
           </span>
+
 
         </button>
 
 
         <div class="section-content">
 
+
           <div id="listWrap">
+
 
             <div
               class="empty"
               id="emptyMsg"
             >
+
+
               No cards yet —
+
               <b>
+
                 scan one to start your list.
+
               </b>
+
+
             </div>
 
 
             <div class="twrap">
+
 
               <table
                 id="table"
                 style="display:none"
               >
 
+
                 <thead>
+
 
                   <tr>
 
+
                     <th></th>
+
 
                     <th class="num">
+
                       #
+
                     </th>
 
+
                     <th>
+
                       Name
+
                     </th>
 
+
                     <th>
+
                       Set
+
                     </th>
 
+
                     <th>
+
                       Lang
+
                     </th>
 
+
                     <th>
+
                       Foil
+
                     </th>
+
 
                     <th></th>
 
+
                   </tr>
+
 
                 </thead>
 
 
                 <tbody id="tbody"></tbody>
 
+
               </table>
 
+
             </div>
+
 
           </div>
 
 
           <div class="collection-actions">
 
+
             <button
               id="clearListBtn"
               class="ghost"
             >
+
               Clear list
+
             </button>
+
 
           </div>
 
+
         </div>
+
 
       </section>
 
@@ -1581,10 +2931,12 @@
            EXPORT
       ============================= -->
 
+
       <section
         class="app-section"
         data-app-section="export"
       >
+
 
         <button
           class="section-toggle"
@@ -1592,44 +2944,71 @@
           aria-expanded="false"
         >
 
+
           <span class="section-title">
+
             ↗ Export
+
           </span>
 
+
           <span class="section-arrow">
+
             ›
+
           </span>
+
 
         </button>
 
 
         <div class="section-content">
 
+
           <div class="exports">
 
+
             <button data-fmt="manabox">
+
               ManaBox CSV
+
             </button>
+
 
             <button data-fmt="moxfield">
+
               Moxfield CSV
+
             </button>
+
 
             <button data-fmt="moxfield-deck">
+
               Moxfield TXT
+
             </button>
+
 
             <button data-fmt="archidekt">
+
               Archidekt CSV
+
             </button>
+
 
             <button data-fmt="deckbox">
+
               Deckbox CSV
+
             </button>
 
+
             <button data-fmt="scryfall">
+
               Scryfall JSON
+
             </button>
+
 
           </div>
 
@@ -1641,17 +3020,27 @@
 
 
           <p class="note">
-            A vision model reads each card; the exact printing
-            is resolved from <code>Scryfall</code>.
-            Confirm the printing and language before adding,
-            then export.
+
+            A vision model reads each card;
+            the exact printing is resolved
+            from <code>Scryfall</code>.
+
+            Confirm the printing and language
+            before adding, then export.
+
           </p>
+
 
         </div>
 
+
       </section>
 
+
     </div>
+
+
+    <!-- Used by existing app.js -->
 
 
     <canvas
@@ -1659,97 +3048,185 @@
       style="display:none"
     ></canvas>
 
+
   </main>
 
 
-  <!--
-    app.js is unchanged in this design pass.
-    v=9 matches the current project version.
-  -->
+  <!-- ============================
+       EXISTING APPLICATION
+  ============================= -->
+
 
   <script src="app.js?v=9"></script>
 
 
-  <!--
-    Design-only accordion behavior.
-    Kept here so app.js does not need to be modified
-    during this first UI test.
-  -->
+  <!-- ============================
+       RAPID BATCH IDENTIFICATION
+  ============================= -->
+
+
+  <script src="batch-identify.js?v=1"></script>
+
+
+  <!-- ============================
+       ACCORDION UI
+  ============================= -->
+
 
   <script>
+
     (() => {
+
       "use strict";
 
-      const sections = Array.from(
-        document.querySelectorAll(".app-section")
+
+      const sections =
+        Array.from(
+
+          document.querySelectorAll(
+            ".app-section"
+          )
+
+        );
+
+
+      sections.forEach(
+        (section) => {
+
+
+          const toggle =
+            section.querySelector(
+              ".section-toggle"
+            );
+
+
+          if (!toggle) {
+
+            return;
+          }
+
+
+          toggle.addEventListener(
+            "click",
+            () => {
+
+
+              const wasOpen =
+                section.classList.contains(
+                  "open"
+                );
+
+
+              sections.forEach(
+                (other) => {
+
+
+                  other.classList.remove(
+                    "open"
+                  );
+
+
+                  const otherToggle =
+                    other.querySelector(
+                      ".section-toggle"
+                    );
+
+
+                  if (otherToggle) {
+
+                    otherToggle.setAttribute(
+                      "aria-expanded",
+                      "false"
+                    );
+                  }
+
+                }
+              );
+
+
+              if (!wasOpen) {
+
+
+                section.classList.add(
+                  "open"
+                );
+
+
+                toggle.setAttribute(
+                  "aria-expanded",
+                  "true"
+                );
+
+              }
+
+            }
+          );
+
+        }
       );
 
-      sections.forEach((section) => {
-        const toggle =
-          section.querySelector(".section-toggle");
 
-        if (!toggle) return;
-
-        toggle.addEventListener("click", () => {
-          const wasOpen =
-            section.classList.contains("open");
-
-          sections.forEach((other) => {
-            other.classList.remove("open");
-
-            const otherToggle =
-              other.querySelector(".section-toggle");
-
-            if (otherToggle) {
-              otherToggle.setAttribute(
-                "aria-expanded",
-                "false"
-              );
-            }
-          });
-
-          if (!wasOpen) {
-            section.classList.add("open");
-
-            toggle.setAttribute(
-              "aria-expanded",
-              "true"
-            );
-          }
-        });
-      });
+      /*
+        Keep the number shown in the
+        Rapid Batch header synchronized
+        with the real batch counter.
+      */
 
 
       const batchCounter =
-        document.getElementById("batchCounter");
+        document.getElementById(
+          "batchCounter"
+        );
+
 
       const batchSummary =
-        document.getElementById("batchSectionSummary");
+        document.getElementById(
+          "batchSectionSummary"
+        );
+
 
       if (
         batchCounter &&
         batchSummary
       ) {
-        const syncBatchSummary = () => {
-          batchSummary.textContent =
-            batchCounter.textContent;
-        };
+
+
+        const syncBatchSummary =
+          () => {
+
+
+            batchSummary.textContent =
+              batchCounter.textContent;
+
+          };
+
 
         syncBatchSummary();
+
 
         new MutationObserver(
           syncBatchSummary
         ).observe(
           batchCounter,
           {
-            childList: true,
-            characterData: true,
-            subtree: true
+
+            childList:
+              true,
+
+            characterData:
+              true,
+
+            subtree:
+              true
           }
         );
+
       }
+
     })();
+
   </script>
+
 
 </body>
 </html>
