@@ -94,14 +94,17 @@ async function identify(blob) {
       headers: { "Content-Type": "image/jpeg", "x-app-token": getToken() },
       body: blob,
     });
+
+
     const j = await r.json();
 
-if (!r.ok || j.error) {
-  setStatus("Identify failed: " + (j.error || r.status));
-  return;
+    if (!r.ok || j.error) {
+        setStatus("Identify failed: " + (j.error || r.status));
+        return;
 }
 const read = j.result || j;
 await handleRead(read);
+
   } catch (e) {
     setStatus("Couldn't reach the scanner service: " + e.message + " (check your connection).");
   } finally {
