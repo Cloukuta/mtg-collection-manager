@@ -13,47 +13,28 @@
     content="#17181b"
   />
 
-  <title>
-    MTG Card Scanner
-  </title>
-
+  <title>MTG Card Scanner</title>
 
   <style>
 
     :root {
-
       color-scheme: dark;
 
       --bg: #17181b;
-
       --panel: #202227;
-
       --panel-2: #1b1d21;
-
       --line: #2b2d33;
-
       --line-2: #383b42;
 
       --text: #ededee;
-
       --muted: #9a9ba2;
-
       --faint: #6b6d74;
 
       --accent: #c2a063;
-
       --accent-ink: #201808;
-
-      --accent-soft:
-        rgba(
-          194,
-          160,
-          99,
-          .13
-        );
+      --accent-soft: rgba(194, 160, 99, .13);
 
       --danger: #d98a86;
-
       --success: #82b98f;
 
       --font-ui:
@@ -77,40 +58,26 @@
 
 
     * {
-
-      box-sizing:
-        border-box;
+      box-sizing: border-box;
     }
 
 
     html {
-
-      -webkit-text-size-adjust:
-        100%;
+      -webkit-text-size-adjust: 100%;
     }
 
 
     body {
-
       margin: 0;
+      min-height: 100dvh;
 
-      min-height:
-        100dvh;
+      font-family: var(--font-ui);
 
-      font-family:
-        var(--font-ui);
+      background: var(--bg);
+      color: var(--text);
 
-      background:
-        var(--bg);
-
-      color:
-        var(--text);
-
-      line-height:
-        1.5;
-
-      -webkit-font-smoothing:
-        antialiased;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
 
@@ -118,11 +85,8 @@
        TOP BAR
     ============================== */
 
-
     .topbar {
-
-      padding:
-        16px 16px 14px;
+      padding: 16px 16px 14px;
 
       border-bottom:
         1px solid
@@ -131,30 +95,20 @@
 
 
     .brand {
-
       margin: 0;
 
-      font-size:
-        18px;
+      font-size: 18px;
+      font-weight: 700;
 
-      font-weight:
-        700;
-
-      letter-spacing:
-        -.01em;
+      letter-spacing: -.01em;
     }
 
 
     .tagline {
+      margin: 3px 0 0;
 
-      margin:
-        3px 0 0;
-
-      font-size:
-        13px;
-
-      color:
-        var(--muted);
+      font-size: 13px;
+      color: var(--muted);
     }
 
 
@@ -162,37 +116,25 @@
        MAIN
     ============================== */
 
-
     main {
+      width: min(100%, 760px);
 
-      width:
-        min(
-          100%,
-          760px
-        );
+      margin: 0 auto;
 
-      margin:
-        0 auto;
-
-      padding:
-        14px;
+      padding: 14px;
     }
 
 
     .panel {
+      margin-bottom: 14px;
 
-      margin-bottom:
-        14px;
-
-      padding:
-        16px;
+      padding: 16px;
 
       border:
         1px solid
         var(--line);
 
-      border-radius:
-        14px;
+      border-radius: 14px;
 
       background:
         var(--panel);
@@ -200,27 +142,17 @@
 
 
     .panel-head {
+      display: flex;
 
-      display:
-        flex;
+      align-items: baseline;
+      justify-content: space-between;
 
-      align-items:
-        baseline;
+      gap: 10px;
 
-      justify-content:
-        space-between;
+      margin: 0 0 14px;
 
-      gap:
-        10px;
-
-      margin:
-        0 0 14px;
-
-      font-size:
-        15px;
-
-      font-weight:
-        650;
+      font-size: 15px;
+      font-weight: 650;
     }
 
 
@@ -228,68 +160,50 @@
        BUTTONS
     ============================== */
 
-
     button {
+      font: inherit;
 
-      font:
-        inherit;
+      font-size: 16px;
+      font-weight: 600;
 
-      font-size:
-        16px;
+      cursor: pointer;
 
-      font-weight:
-        600;
-
-      cursor:
-        pointer;
-
-      padding:
-        14px 16px;
+      padding: 14px 16px;
 
       border:
         1px solid
         transparent;
 
-      border-radius:
-        10px;
+      border-radius: 10px;
 
-      color:
-        var(--text);
+      color: var(--text);
 
-      background:
-        #2a2d34;
+      background: #2a2d34;
 
       transition:
         background .12s ease,
         border-color .12s ease,
-        color .12s ease;
+        color .12s ease,
+        opacity .12s ease;
     }
 
 
     button:hover:not(:disabled) {
-
-      background:
-        #31343c;
+      background: #31343c;
     }
 
 
     button:disabled {
+      opacity: .4;
 
-      opacity:
-        .4;
-
-      cursor:
-        not-allowed;
+      cursor: not-allowed;
     }
 
 
     button.primary {
+      color: var(--accent-ink);
 
-      color:
-        var(--accent-ink);
-
-      background:
-        var(--accent);
+      background: var(--accent);
 
       border-color:
         var(--accent);
@@ -297,16 +211,12 @@
 
 
     button.primary:hover:not(:disabled) {
-
-      background:
-        #cdac6f;
+      background: #cdac6f;
     }
 
 
     button.ghost {
-
-      background:
-        transparent;
+      background: transparent;
 
       border-color:
         var(--line-2);
@@ -314,7 +224,6 @@
 
 
     button.ghost:hover:not(:disabled) {
-
       background:
         rgba(
           255,
@@ -326,13 +235,11 @@
 
 
     :focus-visible {
-
       outline:
         2px solid
         var(--accent);
 
-      outline-offset:
-        2px;
+      outline-offset: 2px;
     }
 
 
@@ -340,82 +247,56 @@
        SHARED CAMERA
     ============================== */
 
-
     .stage {
+      position: relative;
 
-      position:
-        relative;
+      width: 100%;
 
-      width:
-        100%;
+      aspect-ratio: 3 / 4;
 
-      aspect-ratio:
-        3 / 4;
-
-      overflow:
-        hidden;
+      overflow: hidden;
 
       border:
         1px solid
         var(--line-2);
 
-      border-radius:
-        10px;
+      border-radius: 10px;
 
-      background:
-        #000;
+      background: #000;
     }
 
 
     video,
     .stage canvas {
+      position: absolute;
 
-      position:
-        absolute;
+      inset: 0;
 
-      inset:
-        0;
+      width: 100%;
+      height: 100%;
 
-      width:
-        100%;
-
-      height:
-        100%;
-
-      object-fit:
-        cover;
+      object-fit: cover;
     }
 
 
     .overlay {
+      position: absolute;
 
-      position:
-        absolute;
+      inset: 0;
 
-      inset:
-        0;
-
-      pointer-events:
-        none;
+      pointer-events: none;
     }
 
 
     .cardbox {
+      position: absolute;
 
-      position:
-        absolute;
+      left: 50%;
+      top: 50%;
 
-      left:
-        50%;
+      height: 86%;
 
-      top:
-        50%;
-
-      height:
-        86%;
-
-      aspect-ratio:
-        63 / 88;
+      aspect-ratio: 63 / 88;
 
       transform:
         translate(
@@ -432,21 +313,15 @@
           .28
         );
 
-      border-radius:
-        6px;
+      border-radius: 6px;
     }
 
 
     .corner {
+      position: absolute;
 
-      position:
-        absolute;
-
-      width:
-        22px;
-
-      height:
-        22px;
+      width: 22px;
+      height: 22px;
 
       border:
         2px solid
@@ -460,103 +335,61 @@
 
 
     .corner.tl {
+      top: -1px;
+      left: -1px;
 
-      top:
-        -1px;
+      border-right: 0;
+      border-bottom: 0;
 
-      left:
-        -1px;
-
-      border-right:
-        0;
-
-      border-bottom:
-        0;
-
-      border-top-left-radius:
-        6px;
+      border-top-left-radius: 6px;
     }
 
 
     .corner.tr {
+      top: -1px;
+      right: -1px;
 
-      top:
-        -1px;
+      border-left: 0;
+      border-bottom: 0;
 
-      right:
-        -1px;
-
-      border-left:
-        0;
-
-      border-bottom:
-        0;
-
-      border-top-right-radius:
-        6px;
+      border-top-right-radius: 6px;
     }
 
 
     .corner.bl {
+      bottom: -1px;
+      left: -1px;
 
-      bottom:
-        -1px;
+      border-right: 0;
+      border-top: 0;
 
-      left:
-        -1px;
-
-      border-right:
-        0;
-
-      border-top:
-        0;
-
-      border-bottom-left-radius:
-        6px;
+      border-bottom-left-radius: 6px;
     }
 
 
     .corner.br {
+      right: -1px;
+      bottom: -1px;
 
-      right:
-        -1px;
+      border-left: 0;
+      border-top: 0;
 
-      bottom:
-        -1px;
-
-      border-left:
-        0;
-
-      border-top:
-        0;
-
-      border-bottom-right-radius:
-        6px;
+      border-bottom-right-radius: 6px;
     }
 
 
     .hint {
+      position: absolute;
 
-      position:
-        absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
 
-      left:
-        0;
+      padding: 0 12px;
 
-      right:
-        0;
+      text-align: center;
 
-      bottom:
-        8px;
-
-      padding:
-        0 12px;
-
-      text-align:
-        center;
-
-      font-size:
-        12.5px;
+      font-size: 12.5px;
 
       color:
         rgba(
@@ -567,8 +400,7 @@
         );
 
       text-shadow:
-        0 1px 3px
-        #000;
+        0 1px 3px #000;
 
       transition:
         opacity .2s ease;
@@ -576,54 +408,131 @@
 
 
     body.scanning .stage {
-
-      opacity:
-        .5;
+      opacity: .5;
     }
 
 
     body.scanning .hint {
-
-      opacity:
-        0;
+      opacity: 0;
     }
 
 
-    .camera-actions {
+    /* ==============================
+       GLOBAL CAPTURE
+    ============================== */
 
-      display:
-        grid;
+    .global-capture {
+      margin-top: 14px;
+
+      padding: 12px;
+
+      border:
+        1px solid
+        var(--line-2);
+
+      border-radius: 12px;
+
+      background:
+        var(--panel-2);
+    }
+
+
+    .capture-mode-status {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      min-height: 22px;
+
+      margin-bottom: 9px;
+
+      text-align: center;
+
+      font-family:
+        var(--font-mono);
+
+      font-size: 12px;
+
+      color:
+        var(--muted);
+    }
+
+
+    .capture-mode-status strong {
+      color:
+        var(--accent);
+
+      font-weight: 650;
+    }
+
+
+    #globalCaptureBtn {
+      width: 100%;
+
+      min-height: 58px;
+
+      padding: 15px 16px;
+
+      font-size: 17px;
+      font-weight: 750;
+
+      letter-spacing: .01em;
+    }
+
+
+    #globalCaptureBtn.batch-ready {
+      color: var(--text);
+
+      background:
+        transparent;
+
+      border-color:
+        var(--success);
+    }
+
+
+    /*
+      IMPORTANT:
+      app.js still uses these buttons internally.
+
+      We hide them visually instead of deleting them.
+    */
+
+    #captureBtn,
+    #batchCaptureBtn {
+      display: none !important;
+    }
+
+
+    /* ==============================
+       CAMERA ACTIONS
+    ============================== */
+
+    .camera-actions {
+      display: grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap:
-        10px;
+      gap: 10px;
 
-      margin-top:
-        14px;
+      margin-top: 12px;
     }
 
 
     .statusbar {
+      display: flex;
 
-      display:
-        flex;
+      align-items: center;
 
-      align-items:
-        center;
+      gap: 9px;
 
-      gap:
-        9px;
+      min-height: 20px;
 
-      min-height:
-        20px;
+      margin-top: 12px;
 
-      margin-top:
-        12px;
-
-      font-size:
-        13.5px;
+      font-size: 13.5px;
 
       color:
         var(--muted);
@@ -631,18 +540,12 @@
 
 
     .spinner {
+      display: none;
 
-      display:
-        none;
+      width: 15px;
+      height: 15px;
 
-      width:
-        15px;
-
-      height:
-        15px;
-
-      flex:
-        none;
+      flex: none;
 
       border:
         2px solid
@@ -651,8 +554,7 @@
       border-top-color:
         var(--accent);
 
-      border-radius:
-        50%;
+      border-radius: 50%;
 
       animation:
         spin .7s
@@ -662,16 +564,12 @@
 
 
     body.scanning .spinner {
-
-      display:
-        inline-block;
+      display: inline-block;
     }
 
 
     @keyframes spin {
-
       to {
-
         transform:
           rotate(
             360deg
@@ -684,31 +582,23 @@
        ACCORDION
     ============================== */
 
-
     .app-sections {
+      display: flex;
 
-      display:
-        flex;
+      flex-direction: column;
 
-      flex-direction:
-        column;
-
-      gap:
-        10px;
+      gap: 10px;
     }
 
 
     .app-section {
-
-      overflow:
-        hidden;
+      overflow: hidden;
 
       border:
         1px solid
         var(--line);
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
       background:
         var(--panel);
@@ -716,78 +606,53 @@
 
 
     .section-toggle {
+      display: flex;
 
-      display:
-        flex;
+      align-items: center;
 
-      align-items:
-        center;
+      gap: 10px;
 
-      gap:
-        10px;
+      width: 100%;
 
-      width:
-        100%;
+      padding: 14px 16px;
 
-      padding:
-        14px 16px;
+      border: 0;
+      border-radius: 0;
 
-      border:
-        0;
+      text-align: left;
 
-      border-radius:
-        0;
+      color: var(--text);
 
-      text-align:
-        left;
-
-      color:
-        var(--text);
-
-      background:
-        transparent;
+      background: transparent;
     }
 
 
     .section-toggle:hover:not(:disabled) {
-
       background:
         var(--panel-2);
     }
 
 
     .section-title {
+      display: flex;
 
-      display:
-        flex;
+      align-items: center;
 
-      align-items:
-        center;
+      gap: 8px;
 
-      gap:
-        8px;
-
-      font-size:
-        15px;
-
-      font-weight:
-        700;
+      font-size: 15px;
+      font-weight: 700;
     }
 
 
     .section-summary {
-
-      margin-left:
-        auto;
+      margin-left: auto;
 
       font-family:
         var(--font-mono);
 
-      font-size:
-        12px;
-
-      font-weight:
-        500;
+      font-size: 12px;
+      font-weight: 500;
 
       color:
         var(--muted);
@@ -795,15 +660,11 @@
 
 
     .section-arrow {
+      margin-left: 2px;
 
-      margin-left:
-        2px;
+      font-size: 20px;
 
-      font-size:
-        20px;
-
-      line-height:
-        1;
+      line-height: 1;
 
       color:
         var(--muted);
@@ -815,7 +676,6 @@
 
     .app-section.open
     .section-arrow {
-
       transform:
         rotate(
           90deg
@@ -824,9 +684,7 @@
 
 
     .section-content {
-
-      display:
-        none;
+      display: none;
 
       padding:
         0 14px 14px;
@@ -839,12 +697,9 @@
 
     .app-section.open
     .section-content {
+      display: block;
 
-      display:
-        block;
-
-      padding-top:
-        14px;
+      padding-top: 14px;
 
       border-top-color:
         var(--line);
@@ -855,85 +710,54 @@
        SINGLE SCAN
     ============================== */
 
+    .single-help {
+      margin: 0 0 12px;
 
-    .single-actions {
+      font-size: 13px;
 
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr;
-
-      gap:
-        10px;
-    }
-
-
-    #captureBtn {
-
-      width:
-        100%;
+      color:
+        var(--muted);
     }
 
 
     .preview {
+      position: relative;
 
-      position:
-        relative;
+      display: inline-block;
 
-      display:
-        inline-block;
+      width: 100%;
 
-      width:
-        100%;
+      max-width: 180px;
 
-      max-width:
-        180px;
+      margin-top: 12px;
 
-      margin-top:
-        12px;
-
-      vertical-align:
-        top;
+      vertical-align: top;
     }
 
 
     #capPreview {
-
-      width:
-        100%;
+      width: 100%;
 
       border:
         1px solid
         var(--line-2);
 
-      border-radius:
-        8px;
+      border-radius: 8px;
 
-      background:
-        #000;
+      background: #000;
     }
 
 
     .scanline {
+      position: absolute;
 
-      position:
-        absolute;
+      left: 0;
+      right: 0;
+      top: 0;
 
-      left:
-        0;
+      height: 2px;
 
-      right:
-        0;
-
-      top:
-        0;
-
-      height:
-        2px;
-
-      opacity:
-        0;
+      opacity: 0;
 
       background:
         rgba(
@@ -945,8 +769,8 @@
     }
 
 
-    body.scanning .scanline {
-
+    body.scanning
+    .scanline {
       animation:
         sweep 1.3s
         ease-in-out
@@ -955,38 +779,22 @@
 
 
     @keyframes sweep {
-
       0% {
-
-        top:
-          4%;
-
-        opacity:
-          0;
+        top: 4%;
+        opacity: 0;
       }
-
 
       20% {
-
-        opacity:
-          .9;
+        opacity: .9;
       }
-
 
       80% {
-
-        opacity:
-          .9;
+        opacity: .9;
       }
 
-
       100% {
-
-        top:
-          96%;
-
-        opacity:
-          0;
+        top: 96%;
+        opacity: 0;
       }
     }
 
@@ -995,88 +803,62 @@
        CARD RESULT
     ============================== */
 
-
     #candidate {
+      display: none;
 
-      display:
-        none;
+      gap: 14px;
 
-      gap:
-        14px;
+      margin-top: 18px;
 
-      margin-top:
-        18px;
-
-      padding-top:
-        18px;
+      padding-top: 18px;
 
       border-top:
         1px solid
         var(--line);
 
-      align-items:
-        flex-start;
+      align-items: flex-start;
     }
 
 
     #candImg {
+      width: 96px;
 
-      width:
-        96px;
+      height: auto;
 
-      height:
-        auto;
+      aspect-ratio: 63 / 88;
 
-      aspect-ratio:
-        63 / 88;
+      object-fit: cover;
 
-      object-fit:
-        cover;
+      flex: none;
 
-      flex:
-        none;
+      align-self: flex-start;
 
-      align-self:
-        flex-start;
+      border-radius: 8px;
 
-      border-radius:
-        8px;
-
-      background:
-        #000;
+      background: #000;
     }
 
 
     #candidate .meta {
+      flex: 1;
 
-      flex:
-        1;
-
-      min-width:
-        0;
+      min-width: 0;
     }
 
 
     #candName {
+      font-size: 17px;
 
-      font-size:
-        17px;
+      font-weight: 700;
 
-      font-weight:
-        700;
-
-      letter-spacing:
-        -.01em;
+      letter-spacing: -.01em;
     }
 
 
     #candSub {
+      margin-top: 3px;
 
-      margin-top:
-        3px;
-
-      font-size:
-        13px;
+      font-size: 13px;
 
       color:
         var(--muted);
@@ -1084,15 +866,12 @@
 
 
     #candRead {
-
-      margin-top:
-        6px;
+      margin-top: 6px;
 
       font-family:
         var(--font-mono);
 
-      font-size:
-        11.5px;
+      font-size: 11.5px;
 
       color:
         var(--faint);
@@ -1103,27 +882,20 @@
 
 
     .row {
+      display: flex;
 
-      display:
-        flex;
+      align-items: center;
 
-      align-items:
-        center;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
-
-      gap:
-        10px;
+      gap: 10px;
     }
 
 
     input[type=text],
     input[type=number],
     select {
-
-      min-height:
-        46px;
+      min-height: 46px;
 
       padding:
         11px 12px;
@@ -1132,17 +904,13 @@
         1px solid
         var(--line-2);
 
-      border-radius:
-        9px;
+      border-radius: 9px;
 
-      font:
-        inherit;
+      font: inherit;
 
-      font-size:
-        16px;
+      font-size: 16px;
 
-      color:
-        var(--text);
+      color: var(--text);
 
       background:
         var(--panel-2);
@@ -1150,31 +918,22 @@
 
 
     input[type=number] {
-
-      width:
-        72px;
+      width: 72px;
     }
 
 
     .fld {
+      display: flex;
 
-      display:
-        flex;
+      flex: 1;
 
-      flex:
-        1;
+      flex-direction: column;
 
-      flex-direction:
-        column;
+      gap: 5px;
 
-      gap:
-        5px;
+      min-width: 140px;
 
-      min-width:
-        140px;
-
-      font-size:
-        12px;
+      font-size: 12px;
 
       color:
         var(--muted);
@@ -1182,18 +941,13 @@
 
 
     .chk {
+      display: inline-flex;
 
-      display:
-        inline-flex;
+      align-items: center;
 
-      align-items:
-        center;
+      gap: 8px;
 
-      gap:
-        8px;
-
-      font-size:
-        15px;
+      font-size: 15px;
 
       color:
         var(--muted);
@@ -1201,12 +955,8 @@
 
 
     .chk input[type=checkbox] {
-
-      width:
-        21px;
-
-      height:
-        21px;
+      width: 21px;
+      height: 21px;
 
       accent-color:
         var(--accent);
@@ -1214,7 +964,6 @@
 
 
     .chk:has(#foilChk:checked) {
-
       color:
         var(--accent);
     }
@@ -1224,33 +973,24 @@
        RAPID BATCH
     ============================== */
 
-
     .batch-settings {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         1fr 1fr;
 
-      gap:
-        10px;
+      gap: 10px;
     }
 
 
     .batch-settings label {
+      display: flex;
 
-      display:
-        flex;
+      flex-direction: column;
 
-      flex-direction:
-        column;
+      gap: 6px;
 
-      gap:
-        6px;
-
-      font-size:
-        12px;
+      font-size: 12px;
 
       color:
         var(--muted);
@@ -1258,51 +998,38 @@
 
 
     .batch-settings select {
-
-      width:
-        100%;
+      width: 100%;
     }
 
 
     .batch-actions {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
-        1fr 1fr;
+        1fr;
 
-      gap:
-        8px;
+      gap: 8px;
 
-      margin-top:
-        12px;
+      margin-top: 12px;
     }
 
 
-    #startBatchBtn {
-
-      grid-column:
-        1 / -1;
+    #startBatchBtn,
+    #clearBatchBtn {
+      width: 100%;
     }
 
 
     .batch-counter {
+      margin-top: 14px;
 
-      margin-top:
-        14px;
-
-      text-align:
-        center;
+      text-align: center;
 
       font-family:
         var(--font-mono);
 
-      font-size:
-        24px;
-
-      font-weight:
-        700;
+      font-size: 24px;
+      font-weight: 700;
 
       color:
         var(--accent);
@@ -1310,9 +1037,7 @@
 
 
     .batch-preview {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         repeat(
@@ -1320,81 +1045,54 @@
           1fr
         );
 
-      gap:
-        6px;
+      gap: 6px;
 
-      margin-top:
-        12px;
+      margin-top: 12px;
     }
 
 
     .batch-preview-item {
-
-      position:
-        relative;
+      position: relative;
     }
 
 
     .batch-preview img {
+      display: block;
 
-      display:
-        block;
+      width: 100%;
 
-      width:
-        100%;
+      aspect-ratio: 63 / 88;
 
-      aspect-ratio:
-        63 / 88;
-
-      object-fit:
-        cover;
+      object-fit: cover;
 
       border:
         1px solid
         var(--line-2);
 
-      border-radius:
-        7px;
+      border-radius: 7px;
     }
 
 
     .batch-preview-number {
+      position: absolute;
 
-      position:
-        absolute;
+      top: 4px;
+      left: 4px;
 
-      top:
-        4px;
+      display: flex;
 
-      left:
-        4px;
+      align-items: center;
+      justify-content: center;
 
-      display:
-        flex;
+      min-width: 22px;
+      height: 22px;
 
-      align-items:
-        center;
+      border-radius: 50%;
 
-      justify-content:
-        center;
+      font-size: 11px;
+      font-weight: 700;
 
-      min-width:
-        22px;
-
-      height:
-        22px;
-
-      border-radius:
-        50%;
-
-      font-size:
-        11px;
-
-      font-weight:
-        700;
-
-      color:
-        #fff;
+      color: #fff;
 
       background:
         rgba(
@@ -1407,77 +1105,56 @@
 
 
     .batch-identify-actions {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         1fr;
 
-      gap:
-        8px;
+      gap: 8px;
 
-      margin-top:
-        14px;
+      margin-top: 14px;
     }
 
 
-    #identifyBatchBtn {
-
-      width:
-        100%;
+    #identifyBatchBtn,
+    #addBatchBtn {
+      width: 100%;
     }
 
 
     #addBatchBtn {
-
-      display:
-        none;
-
-      width:
-        100%;
+      display: none;
     }
 
 
     #batchResults {
+      display: flex;
 
-      display:
-        flex;
+      flex-direction: column;
 
-      flex-direction:
-        column;
+      gap: 8px;
 
-      gap:
-        8px;
-
-      margin-top:
-        14px;
+      margin-top: 14px;
     }
 
 
     .batch-result {
-
-      display:
-        grid;
+      display: grid;
 
       grid-template-columns:
         52px 1fr;
 
-      gap:
-        10px;
+      gap: 10px;
 
-      align-items:
-        center;
+      align-items: center;
 
-      padding:
-        9px;
+      padding: 9px;
 
       border:
         1px solid
         var(--line);
 
-      border-radius:
-        10px;
+      border-radius: 10px;
 
       background:
         var(--panel-2);
@@ -1485,7 +1162,6 @@
 
 
     .batch-result.ok {
-
       border-color:
         rgba(
           130,
@@ -1497,7 +1173,6 @@
 
 
     .batch-result.bad {
-
       border-color:
         rgba(
           217,
@@ -1509,44 +1184,32 @@
 
 
     .batch-result img {
+      width: 52px;
 
-      width:
-        52px;
+      aspect-ratio: 63 / 88;
 
-      aspect-ratio:
-        63 / 88;
+      object-fit: cover;
 
-      object-fit:
-        cover;
+      border-radius: 5px;
 
-      border-radius:
-        5px;
-
-      background:
-        #000;
+      background: #000;
     }
 
 
     .batch-result-name {
+      font-size: 14px;
 
-      font-size:
-        14px;
-
-      font-weight:
-        700;
+      font-weight: 700;
     }
 
 
     .batch-result-sub {
-
-      margin-top:
-        2px;
+      margin-top: 2px;
 
       font-family:
         var(--font-mono);
 
-      font-size:
-        11px;
+      font-size: 11px;
 
       color:
         var(--muted);
@@ -1560,30 +1223,22 @@
        COLLECTION
     ============================== */
 
-
     .twrap {
-
-      overflow-x:
-        auto;
+      overflow-x: auto;
     }
 
 
     table {
+      width: 100%;
 
-      width:
-        100%;
+      border-collapse: collapse;
 
-      border-collapse:
-        collapse;
-
-      font-size:
-        14px;
+      font-size: 14px;
     }
 
 
     th,
     td {
-
       padding:
         11px 8px;
 
@@ -1591,21 +1246,16 @@
         1px solid
         var(--line);
 
-      text-align:
-        left;
+      text-align: left;
 
-      white-space:
-        nowrap;
+      white-space: nowrap;
     }
 
 
     th {
+      font-size: 11px;
 
-      font-size:
-        11px;
-
-      font-weight:
-        600;
+      font-weight: 600;
 
       color:
         var(--muted);
@@ -1613,19 +1263,15 @@
       text-transform:
         uppercase;
 
-      letter-spacing:
-        .05em;
+      letter-spacing: .05em;
     }
 
 
     td.num,
     th.num {
+      width: 34px;
 
-      width:
-        34px;
-
-      text-align:
-        right;
+      text-align: right;
 
       font-family:
         var(--font-mono);
@@ -1633,16 +1279,12 @@
 
 
     td:nth-child(3) {
-
-      white-space:
-        normal;
+      white-space: normal;
     }
 
 
     .thumb {
-
-      width:
-        40px;
+      width: 40px;
 
       padding:
         7px 4px 7px 8px;
@@ -1650,37 +1292,26 @@
 
 
     .thumb img {
+      display: block;
 
-      display:
-        block;
+      width: 40px;
+      height: auto;
 
-      width:
-        40px;
+      aspect-ratio: 63 / 88;
 
-      height:
-        auto;
+      object-fit: cover;
 
-      aspect-ratio:
-        63 / 88;
+      border-radius: 4px;
 
-      object-fit:
-        cover;
-
-      border-radius:
-        4px;
-
-      background:
-        #000;
+      background: #000;
     }
 
 
     .setcell {
-
       font-family:
         var(--font-mono);
 
-      font-size:
-        12.5px;
+      font-size: 12.5px;
 
       color:
         var(--muted);
@@ -1688,9 +1319,7 @@
 
 
     .settag {
-
-      cursor:
-        help;
+      cursor: help;
 
       border-bottom:
         1px dotted
@@ -1699,61 +1328,47 @@
 
 
     .settag:focus-visible {
-
-      border-radius:
-        2px;
+      border-radius: 2px;
 
       outline:
         2px solid
         var(--accent);
 
-      outline-offset:
-        2px;
+      outline-offset: 2px;
     }
 
 
     .settip {
+      position: fixed;
 
-      position:
-        fixed;
+      z-index: 60;
 
-      z-index:
-        60;
-
-      max-width:
-        240px;
+      max-width: 240px;
 
       padding:
         6px 10px;
 
-      pointer-events:
-        none;
+      pointer-events: none;
 
       border:
         1px solid
         var(--line-2);
 
-      border-radius:
-        8px;
+      border-radius: 8px;
 
-      font-size:
-        13px;
+      font-size: 13px;
 
-      line-height:
-        1.35;
+      line-height: 1.35;
 
-      color:
-        var(--text);
+      color: var(--text);
 
       background:
         var(--panel-2);
 
       box-shadow:
-        0 10px 28px -12px
-        #000;
+        0 10px 28px -12px #000;
 
-      opacity:
-        0;
+      opacity: 0;
 
       transform:
         translateY(
@@ -1767,9 +1382,7 @@
 
 
     .settip.show {
-
-      opacity:
-        1;
+      opacity: 1;
 
       transform:
         translateY(
@@ -1779,49 +1392,38 @@
 
 
     tbody tr:last-child td {
-
-      border-bottom:
-        0;
+      border-bottom: 0;
     }
 
 
     .remove {
-
-      min-height:
-        0;
+      min-height: 0;
 
       padding:
         6px 8px;
 
-      border:
-        0;
+      border: 0;
 
-      font-size:
-        16px;
+      font-size: 16px;
 
-      line-height:
-        1;
+      line-height: 1;
 
       color:
         var(--faint);
 
-      background:
-        transparent;
+      background: transparent;
     }
 
 
     .remove:hover:not(:disabled) {
-
       color:
         var(--danger);
 
-      background:
-        transparent;
+      background: transparent;
     }
 
 
     .empty {
-
       padding:
         30px 14px;
 
@@ -1829,14 +1431,11 @@
         1px dashed
         var(--line-2);
 
-      border-radius:
-        12px;
+      border-radius: 12px;
 
-      text-align:
-        center;
+      text-align: center;
 
-      font-size:
-        14px;
+      font-size: 14px;
 
       color:
         var(--faint);
@@ -1844,9 +1443,7 @@
 
 
     .empty b {
-
-      font-weight:
-        600;
+      font-weight: 600;
 
       color:
         var(--muted);
@@ -1854,45 +1451,34 @@
 
 
     .collection-actions {
+      display: flex;
 
-      display:
-        flex;
+      justify-content: flex-end;
 
-      justify-content:
-        flex-end;
-
-      margin-top:
-        14px;
+      margin-top: 14px;
     }
 
 
     #clearListBtn {
-
       color:
         var(--danger);
     }
 
 
     /* ==============================
-       EXPORTS
+       EXPORT
     ============================== */
 
-
     .exports {
+      display: flex;
 
-      display:
-        flex;
+      flex-wrap: wrap;
 
-      flex-wrap:
-        wrap;
-
-      gap:
-        8px;
+      gap: 8px;
     }
 
 
     .exports button {
-
       padding:
         10px 13px;
 
@@ -1900,47 +1486,36 @@
         1px solid
         var(--line-2);
 
-      font-size:
-        13px;
+      font-size: 13px;
+      font-weight: 600;
 
-      font-weight:
-        600;
-
-      background:
-        transparent;
+      background: transparent;
     }
 
 
     .exports button:hover:not(:disabled) {
-
       color:
         var(--accent);
 
       border-color:
         var(--accent);
 
-      background:
-        transparent;
+      background: transparent;
     }
 
 
     a.dl {
-
-      display:
-        none;
+      display: none;
     }
 
 
     .note {
-
       margin:
         14px 0 0;
 
-      font-size:
-        12.5px;
+      font-size: 12.5px;
 
-      line-height:
-        1.5;
+      line-height: 1.5;
 
       color:
         var(--faint);
@@ -1948,18 +1523,15 @@
 
 
     code {
-
       padding:
         1px 6px;
 
-      border-radius:
-        5px;
+      border-radius: 5px;
 
       font-family:
         var(--font-mono);
 
-      font-size:
-        .92em;
+      font-size: .92em;
 
       background:
         var(--panel-2);
@@ -1970,71 +1542,66 @@
        DESKTOP
     ============================== */
 
-
-    @media (
-      min-width: 861px
-    ) {
+    @media (min-width: 861px) {
 
       main {
-
         width:
           min(
             100%,
             980px
           );
 
-        padding:
-          22px;
+        padding: 22px;
       }
 
 
       .stage {
-
-        aspect-ratio:
-          4 / 3;
+        aspect-ratio: 4 / 3;
       }
 
 
       button {
-
         padding:
           11px 16px;
 
-        font-size:
-          15px;
+        font-size: 15px;
+      }
+
+
+      #globalCaptureBtn {
+        min-height: 54px;
+
+        font-size: 17px;
       }
 
 
       .exports button {
-
         padding:
           9px 13px;
       }
     }
 
 
-    @media (
-      max-width: 520px
-    ) {
+    @media (max-width: 520px) {
 
       .batch-settings {
-
         grid-template-columns:
           1fr;
       }
 
 
       #candidate {
-
-        flex-direction:
-          column;
+        flex-direction: column;
       }
 
 
       #candImg {
+        width: 120px;
+      }
 
-        width:
-          120px;
+
+      .global-capture {
+        position: relative;
       }
     }
 
@@ -2046,29 +1613,21 @@
 
       body.scanning
       .scanline {
+        top: 50%;
 
-        top:
-          50%;
+        opacity: .8;
 
-        opacity:
-          .8;
-
-        animation:
-          none;
+        animation: none;
       }
 
 
       .spinner {
-
-        animation:
-          none;
+        animation: none;
       }
 
 
       .section-arrow {
-
-        transition:
-          none;
+        transition: none;
       }
     }
 
@@ -2078,13 +1637,11 @@
 
 <body>
 
-
   <header class="topbar">
 
     <h1 class="brand">
       MTG Card Scanner
     </h1>
-
 
     <p class="tagline">
       Scan a card, confirm the printing, export your list.
@@ -2100,9 +1657,7 @@
          SHARED CAMERA
     ============================= -->
 
-
     <section class="panel">
-
 
       <div class="panel-head">
 
@@ -2115,7 +1670,6 @@
 
       <div class="stage">
 
-
         <video
           id="video"
           playsinline
@@ -2125,15 +1679,11 @@
 
         <div class="overlay">
 
-
           <div class="cardbox">
 
             <span class="corner tl"></span>
-
             <span class="corner tr"></span>
-
             <span class="corner bl"></span>
-
             <span class="corner br"></span>
 
           </div>
@@ -2143,28 +1693,50 @@
             class="hint"
             id="hint"
           >
-
             Fit the whole card inside the frame
-
           </div>
 
-
         </div>
-
 
       </div>
 
 
-      <div class="camera-actions">
+      <!-- ============================
+           GLOBAL CAPTURE BUTTON
+      ============================= -->
 
+      <div class="global-capture">
+
+        <div
+          id="captureModeStatus"
+          class="capture-mode-status"
+        >
+          Mode:
+          <strong>&nbsp;Single Scan</strong>
+        </div>
+
+
+        <button
+          id="globalCaptureBtn"
+          class="primary"
+          type="button"
+          disabled
+        >
+          📸 Capture &amp; identify
+        </button>
+
+      </div>
+
+
+      <!-- CAMERA CONTROLS -->
+
+      <div class="camera-actions">
 
         <button
           id="startBtn"
           class="ghost"
         >
-
           Start camera
-
         </button>
 
 
@@ -2173,17 +1745,13 @@
           class="ghost"
           disabled
         >
-
           Refresh camera
-
         </button>
-
 
       </div>
 
 
       <div class="statusbar">
-
 
         <span
           class="spinner"
@@ -2193,22 +1761,17 @@
 
 
         <span id="status">
-
           Start the camera to begin.
-
         </span>
 
-
       </div>
-
 
     </section>
 
 
     <!-- ============================
-         ACCORDION
+         APP SECTIONS
     ============================= -->
-
 
     <div class="app-sections">
 
@@ -2217,12 +1780,10 @@
            SINGLE SCAN
       ============================= -->
 
-
       <section
         class="app-section open"
         data-app-section="single"
       >
-
 
         <button
           class="section-toggle"
@@ -2230,49 +1791,43 @@
           aria-expanded="true"
         >
 
-
           <span class="section-title">
-
             📷 Single Scan
-
           </span>
-
 
           <span class="section-arrow">
-
             ›
-
           </span>
-
 
         </button>
 
 
         <div class="section-content">
 
-
-          <div class="single-actions">
-
-
-            <button
-              id="captureBtn"
-              class="primary"
-              disabled
-            >
-
-              Capture &amp; identify
-
-            </button>
+          <p class="single-help">
+            Place one card inside the camera frame and use the
+            Capture button directly below the camera.
+          </p>
 
 
-          </div>
+          <!--
+            Hidden but preserved because app.js owns
+            the original single-card capture logic.
+          -->
+
+          <button
+            id="captureBtn"
+            class="primary"
+            disabled
+            type="button"
+          >
+            Capture &amp; identify
+          </button>
 
 
           <!-- CAPTURE PREVIEW -->
 
-
           <div class="preview">
-
 
             <canvas
               id="capPreview"
@@ -2280,23 +1835,17 @@
               style="display:none"
             ></canvas>
 
-
             <span
               class="scanline"
               aria-hidden="true"
             ></span>
 
-
           </div>
 
 
-          <!-- ============================
-               CARD RESULT
-          ============================= -->
-
+          <!-- CARD RESULT -->
 
           <div id="candidate">
-
 
             <img
               id="candImg"
@@ -2306,18 +1855,13 @@
 
             <div class="meta">
 
-
               <div id="candName">
-
                 —
-
               </div>
 
 
               <div id="candSub">
-
                 —
-
               </div>
 
 
@@ -2326,12 +1870,10 @@
 
               <!-- MANUAL CORRECTION -->
 
-
               <div
                 class="row"
                 style="margin-top:12px"
               >
-
 
                 <input
                   type="text"
@@ -2345,11 +1887,8 @@
                   id="searchBtn"
                   class="ghost"
                 >
-
                   Search
-
                 </button>
-
 
               </div>
 
@@ -2366,12 +1905,10 @@
 
               <!-- PRINTING / LANGUAGE -->
 
-
               <div
                 class="row"
                 style="margin-top:12px"
               >
-
 
                 <label
                   class="fld"
@@ -2381,80 +1918,60 @@
                   "
                 >
 
-
                   Language
-
 
                   <select id="langSelect">
 
                     <option value="">
-
                       —
-
                     </option>
 
                   </select>
-
 
                 </label>
 
 
                 <label class="fld">
 
-
                   Printing
-
 
                   <select id="printingSelect">
 
                     <option value="">
-
                       —
-
                     </option>
 
                   </select>
 
-
                 </label>
-
 
               </div>
 
 
               <!-- FOIL / QTY / ADD -->
 
-
               <div
                 class="row"
                 style="margin-top:12px"
               >
 
-
                 <label class="chk">
-
 
                   <input
                     type="checkbox"
                     id="foilChk"
                   />
 
-
                   <span>
-
                     Foil
-
                   </span>
-
 
                 </label>
 
 
                 <label class="chk">
 
-
                   Qty
-
 
                   <input
                     type="number"
@@ -2462,7 +1979,6 @@
                     value="1"
                     min="1"
                   />
-
 
                 </label>
 
@@ -2473,23 +1989,16 @@
                   disabled
                   style="margin-left:auto"
                 >
-
                   Add to list
-
                 </button>
-
 
               </div>
 
-
             </div>
-
 
           </div>
 
-
         </div>
-
 
       </section>
 
@@ -2498,12 +2007,10 @@
            RAPID BATCH
       ============================= -->
 
-
       <section
         class="app-section"
         data-app-section="batch"
       >
-
 
         <button
           class="section-toggle"
@@ -2511,11 +2018,8 @@
           aria-expanded="false"
         >
 
-
           <span class="section-title">
-
             ⚡ Rapid Batch
-
           </span>
 
 
@@ -2523,155 +2027,110 @@
             class="section-summary"
             id="batchSectionSummary"
           >
-
             0 / 6
-
           </span>
 
 
           <span class="section-arrow">
-
             ›
-
           </span>
-
 
         </button>
 
 
         <div class="section-content">
 
-
           <div class="batch-settings">
-
 
             <label>
 
-
               Finish
-
 
               <select id="batchFinish">
 
-
                 <option value="nonfoil">
-
                   Non-foil
-
                 </option>
-
 
                 <option value="foil">
-
                   Foil
-
                 </option>
-
 
                 <option value="etched">
-
                   Etched Foil
-
                 </option>
-
 
                 <option value="surgefoil">
-
                   Surge Foil
-
                 </option>
-
 
                 <option value="galaxyfoil">
-
                   Galaxy Foil
-
                 </option>
-
 
                 <option value="textured">
-
                   Textured Foil
-
                 </option>
-
 
                 <option value="review">
-
                   Other / Review
-
                 </option>
 
-
               </select>
-
 
             </label>
 
 
             <label>
 
-
               Batch size
-
 
               <select id="batchSize">
 
-
                 <option value="4">
-
                   4 cards
-
                 </option>
-
 
                 <option
                   value="6"
                   selected
                 >
-
                   6 cards
-
                 </option>
-
 
                 <option value="8">
-
                   8 cards
-
                 </option>
-
 
               </select>
 
-
             </label>
-
 
           </div>
 
 
           <div class="batch-actions">
 
-
             <button
               id="startBatchBtn"
               class="ghost"
             >
-
               Start batch
-
             </button>
 
+
+            <!--
+              Hidden but preserved because app.js owns
+              the original batch capture logic.
+            -->
 
             <button
               id="batchCaptureBtn"
               class="primary"
               disabled
+              type="button"
             >
-
               Capture card
-
             </button>
 
 
@@ -2680,11 +2139,8 @@
               class="ghost"
               disabled
             >
-
               Clear batch
-
             </button>
-
 
           </div>
 
@@ -2693,9 +2149,7 @@
             id="batchCounter"
             class="batch-counter"
           >
-
             0 / 6
-
           </div>
 
 
@@ -2707,18 +2161,14 @@
 
           <!-- IDENTIFY BATCH -->
 
-
           <div class="batch-identify-actions">
-
 
             <button
               id="identifyBatchBtn"
               class="primary"
               disabled
             >
-
               Identify batch
-
             </button>
 
 
@@ -2727,32 +2177,25 @@
               class="ghost"
               disabled
             >
-
               Add valid cards
-
             </button>
-
 
           </div>
 
 
-          <!-- BATCH RESULTS -->
-
+          <!-- RESULTS -->
 
           <div id="batchResults"></div>
 
 
           <!-- CONTACT SHEET -->
 
-
           <canvas
             id="batchSheet"
             style="display:none"
           ></canvas>
 
-
         </div>
-
 
       </section>
 
@@ -2761,12 +2204,10 @@
            COLLECTION
       ============================= -->
 
-
       <section
         class="app-section"
         data-app-section="collection"
       >
-
 
         <button
           class="section-toggle"
@@ -2774,155 +2215,105 @@
           aria-expanded="false"
         >
 
-
           <span class="section-title">
-
             📦 Collection
-
           </span>
 
 
           <span class="section-summary">
 
-
             <span id="count">
-
               0
-
             </span>
 
             total
-
 
           </span>
 
 
           <span class="section-arrow">
-
             ›
-
           </span>
-
 
         </button>
 
 
         <div class="section-content">
 
-
           <div id="listWrap">
-
 
             <div
               class="empty"
               id="emptyMsg"
             >
-
-
               No cards yet —
-
               <b>
-
                 scan one to start your list.
-
               </b>
-
-
             </div>
 
 
             <div class="twrap">
-
 
               <table
                 id="table"
                 style="display:none"
               >
 
-
                 <thead>
-
 
                   <tr>
 
-
                     <th></th>
-
 
                     <th class="num">
-
                       #
-
                     </th>
 
-
                     <th>
-
                       Name
-
                     </th>
 
-
                     <th>
-
                       Set
-
                     </th>
 
-
                     <th>
-
                       Lang
-
                     </th>
-
 
                     <th>
-
                       Foil
-
                     </th>
-
 
                     <th></th>
 
-
                   </tr>
-
 
                 </thead>
 
 
                 <tbody id="tbody"></tbody>
 
-
               </table>
 
-
             </div>
-
 
           </div>
 
 
           <div class="collection-actions">
 
-
             <button
               id="clearListBtn"
               class="ghost"
             >
-
               Clear list
-
             </button>
-
 
           </div>
 
-
         </div>
-
 
       </section>
 
@@ -2931,12 +2322,10 @@
            EXPORT
       ============================= -->
 
-
       <section
         class="app-section"
         data-app-section="export"
       >
-
 
         <button
           class="section-toggle"
@@ -2944,71 +2333,50 @@
           aria-expanded="false"
         >
 
-
           <span class="section-title">
-
             ↗ Export
-
           </span>
 
 
           <span class="section-arrow">
-
             ›
-
           </span>
-
 
         </button>
 
 
         <div class="section-content">
 
-
           <div class="exports">
 
-
             <button data-fmt="manabox">
-
               ManaBox CSV
-
             </button>
 
 
             <button data-fmt="moxfield">
-
               Moxfield CSV
-
             </button>
 
 
             <button data-fmt="moxfield-deck">
-
               Moxfield TXT
-
             </button>
 
 
             <button data-fmt="archidekt">
-
               Archidekt CSV
-
             </button>
 
 
             <button data-fmt="deckbox">
-
               Deckbox CSV
-
             </button>
 
 
             <button data-fmt="scryfall">
-
               Scryfall JSON
-
             </button>
-
 
           </div>
 
@@ -3020,34 +2388,26 @@
 
 
           <p class="note">
-
             A vision model reads each card;
-            the exact printing is resolved
-            from <code>Scryfall</code>.
-
+            the exact printing is resolved from
+            <code>Scryfall</code>.
             Confirm the printing and language
             before adding, then export.
-
           </p>
-
 
         </div>
 
-
       </section>
-
 
     </div>
 
 
-    <!-- Used by existing app.js -->
-
+    <!-- Used by app.js -->
 
     <canvas
       id="frameCanvas"
       style="display:none"
     ></canvas>
-
 
   </main>
 
@@ -3056,22 +2416,19 @@
        EXISTING APPLICATION
   ============================= -->
 
-
   <script src="app.js?v=9"></script>
 
 
   <!-- ============================
-       RAPID BATCH IDENTIFICATION
+       RAPID BATCH + GLOBAL CAPTURE
   ============================= -->
 
-
-  <script src="batch-identify.js?v=1"></script>
+  <script src="batch-identify.js?v=2"></script>
 
 
   <!-- ============================
        ACCORDION UI
   ============================= -->
-
 
   <script>
 
@@ -3082,17 +2439,14 @@
 
       const sections =
         Array.from(
-
           document.querySelectorAll(
             ".app-section"
           )
-
         );
 
 
       sections.forEach(
         (section) => {
-
 
           const toggle =
             section.querySelector(
@@ -3101,7 +2455,6 @@
 
 
           if (!toggle) {
-
             return;
           }
 
@@ -3109,7 +2462,6 @@
           toggle.addEventListener(
             "click",
             () => {
-
 
               const wasOpen =
                 section.classList.contains(
@@ -3119,7 +2471,6 @@
 
               sections.forEach(
                 (other) => {
-
 
                   other.classList.remove(
                     "open"
@@ -3146,7 +2497,6 @@
 
               if (!wasOpen) {
 
-
                 section.classList.add(
                   "open"
                 );
@@ -3156,7 +2506,36 @@
                   "aria-expanded",
                   "true"
                 );
+              }
 
+
+              /*
+                Tell batch-identify.js which scanning
+                section was selected.
+
+                Collection / Export do not change
+                the current capture mode.
+              */
+
+              const mode =
+                section.dataset.appSection;
+
+
+              if (
+                mode === "single" ||
+                mode === "batch"
+              ) {
+
+                window.dispatchEvent(
+                  new CustomEvent(
+                    "mtg-capture-mode",
+                    {
+                      detail: {
+                        mode
+                      }
+                    }
+                  )
+                );
               }
 
             }
@@ -3167,11 +2546,9 @@
 
 
       /*
-        Keep the number shown in the
-        Rapid Batch header synchronized
-        with the real batch counter.
+        Keep the Rapid Batch header counter
+        synchronized with the real counter.
       */
-
 
       const batchCounter =
         document.getElementById(
@@ -3190,10 +2567,8 @@
         batchSummary
       ) {
 
-
         const syncBatchSummary =
           () => {
-
 
             batchSummary.textContent =
               batchCounter.textContent;
@@ -3209,24 +2584,16 @@
         ).observe(
           batchCounter,
           {
-
-            childList:
-              true,
-
-            characterData:
-              true,
-
-            subtree:
-              true
+            childList: true,
+            characterData: true,
+            subtree: true
           }
         );
-
       }
 
     })();
 
   </script>
-
 
 </body>
 </html>
