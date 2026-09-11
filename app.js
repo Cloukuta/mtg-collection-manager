@@ -294,23 +294,402 @@ const scryNamed = (name) =>
   );
 
 // ---------- candidate + printing/language picker ----------
-async function setCurrentCard(card, foilGuess) {
-  currentCard = card;
+/* ============================================================
+   SINGLE SCAN FINISH HELPERS
+============================================================ */
 
-  renderCandidate(card);
+const SINGLE_FINISH_LABELS = {
+  nonfoil:
+    "Non-foil",
 
-  await loadPrints(card);
+  foil:
+    "Foil",
 
-  const finishes = card.finishes || [];
+  etched:
+    "Etched Foil",
 
-  const canFoil =
-    finishes.includes("foil") ||
-    finishes.includes("etched");
+  surgefoil:
+    "Surge Foil",
 
-  $("foilChk").disabled = !canFoil;
-  $("foilChk").checked = canFoil && !!foilGuess;
+  galaxyfoil:
+    "Galaxy Foil",
 
-  $("addBtn").disabled = false;
+  textured:
+    "Textured Foil",
+
+  review:
+    "Other / Review"
+};
+
+
+function isFoilLikeSingleFinish(
+  finish
+) {
+
+  return [
+    "foil",
+    "etched",
+    "surgefoil",
+    "galaxyfoil",
+    "textured"
+  ].includes(
+    finish
+  );
+}
+
+
+function getSingleFinishLabel(
+  finish
+) {
+
+  return (
+    SINGLE_FINISH_LABELS[
+      finish
+    ] ||
+    finish ||
+    "Unknown"
+  );
+}
+
+
+/*
+  Scryfall often identifies special treatments through
+  promo_types.
+
+  Example:
+
+  HOB #280
+  Bard, King of Dale
+
+  promo_types:
+    surgefoil
+
+  This lets us pre-select Surge Foil automatically
+  instead of asking Gemini to visually determine the
+  reflective treatment.
+*/
+function detectSpecialFinish(
+  card
+) {
+
+  const promoTypes =
+    Array.isArray(
+      card?.promo_types
+    )
+      ? card.promo_types.map(
+          (value) =>
+            String(
+              value
+            )
+              .toLowerCase()
+              .replace(
+                /[\s_-]+/g,
+                ""
+              )
+        )
+      : [];
+
+
+  if (
+    promoTypes.includes(
+      "surgefoil"
+    )
+  ) {
+
+    return "surgefoil";
+  }
+
+
+  if (
+    promoTypes.includes(
+      "galaxyfoil"
+    )
+  ) {
+
+    return "galaxyfoil";
+  }
+
+
+  if (
+    promoTypes.includes(
+      "textured"
+    ) ||
+    promoTypes.includes(
+      "texturedfoil"
+    )
+  ) {
+
+    return "textured";
+  }
+
+
+  return null;
+}
+
+
+/*
+  Update the Single Scan finish selector according to
+  the exact Scryfall printing.
+
+  Important:
+
+  - Scryfall decides which generic finishes exist.
+  - Scryfall promo metadata can identify treatments
+    such as Surge Foil.
+  - The user can still manually correct the finish.
+*/
+function syncSingleFinishOptions(
+  card,
+  foilGuess = false
+) {
+
+  const select =
+    $("singleFinish");
+
+
+  if (
+    !select
+  ) {
+
+    return;
+  }
+
+
+  const finishes =
+    Array.isArray(
+      card?.finishes
+    )
+      ? card.finishes
+      : [];
+
+
+  const supportsNonfoil =
+    finishes.includes(
+      "nonfoil"
+    );
+
+
+  const supportsFoil =
+    finishes.includes(
+      "foil"
+    );
+
+
+  const supportsEtched =
+    finishes.includes(
+      "etched"
+    );
+
+
+  /*
+    Disable obviously impossible generic options.
+
+    Special foil treatments remain available whenever
+    that printing supports foil so the user can correct
+    metadata manually when needed.
+  */
+
+  Array.from(
+    select.options
+  ).forEach(
+    (option) => {
+
+      switch (
+        option.value
+      ) {
+
+        case "nonfoil":
+
+          option.disabled =
+            !supportsNonfoil;
+
+          break;
+
+
+        case "foil":
+
+          option.disabled =
+            !supportsFoil;
+
+          break;
+
+
+        case "etched":
+
+          option.disabled =
+            !supportsEtched;
+
+          break;
+
+
+        case "surgefoil":
+        case "galaxyfoil":
+        case "textured":
+
+          option.disabled =
+            !supportsFoil;
+
+          break;
+
+
+        case "review":
+
+          option.disabled =
+            false;
+
+          break;
+      }
+    }
+  );
+
+
+  /*
+    First try an exact special treatment reported
+    by Scryfall metadata.
+  */
+
+  const specialFinish =
+    detectSpecialFinish(
+      card
+    );
+
+
+  if (
+    specialFinish
+  ) {
+
+    const option =
+      Array.from(
+        select.options
+      ).find(
+        (item) =>
+          item.value ===
+          specialFinish
+      );
+
+
+    if (
+      option &&
+      !option.disabled
+    ) {
+
+      select.value =
+        specialFinish;
+
+      return;
+    }
+  }
+
+
+  /*
+    Gemini no longer decides special foil treatments.
+
+    foilGuess is kept only for backward compatibility.
+  */
+
+  if (
+    foilGuess
+  ) {
+
+    if (
+      supportsFoil
+    ) {
+
+      select.value =
+        "foil";
+
+      return;
+    }
+
+
+    if (
+      supportsEtched
+    ) {
+
+      select.value =
+        "etched";
+
+      return;
+    }
+  }
+
+
+  /*
+    If this exact printing only exists as foil,
+    automatically choose foil.
+  */
+
+  if (
+    !supportsNonfoil &&
+    supportsFoil
+  ) {
+
+    select.value =
+      "foil";
+
+    return;
+  }
+
+
+  if (
+    !supportsNonfoil &&
+    !supportsFoil &&
+    supportsEtched
+  ) {
+
+    select.value =
+      "etched";
+
+    return;
+  }
+
+
+  if (
+    supportsNonfoil
+  ) {
+
+    select.value =
+      "nonfoil";
+
+    return;
+  }
+
+
+  /*
+    Extremely unusual / incomplete metadata.
+  */
+
+  select.value =
+    "review";
+}
+
+async function setCurrentCard(
+  card,
+  foilGuess
+) {
+
+  currentCard =
+    card;
+
+
+  renderCandidate(
+    card
+  );
+
+
+  await loadPrints(
+    card
+  );
+
+
+  syncSingleFinishOptions(
+    card,
+    foilGuess
+  );
+
+
+  $("addBtn").disabled =
+    false;
 }
 
 function cardImg(card) {
@@ -431,18 +810,10 @@ async function onPickerChange() {
 
   renderCandidate(card);
 
-  const finishes =
-    card.finishes || [];
-
-  $("foilChk").disabled =
-    !(
-      finishes.includes("foil") ||
-      finishes.includes("etched")
-    );
-
-  if ($("foilChk").disabled) {
-    $("foilChk").checked = false;
-  }
+  syncSingleFinishOptions(
+  card,
+  false
+);
 
   setStatus(
     `${card.name} — ` +
@@ -1117,66 +1488,167 @@ $("batchCaptureBtn").addEventListener(
 updateBatchUI();
 
 // ---------- collected list ----------
-$("addBtn").addEventListener("click", () => {
-  if (!currentCard) return;
+// ---------- collected list ----------
+$("addBtn").addEventListener(
+  "click",
+  () => {
 
-  const foil =
-    $("foilChk").checked;
+    if (
+      !currentCard
+    ) {
 
-  const qty =
-    Math.max(
-      1,
-      parseInt(
-        $("qtyInput").value,
-        10
-      ) || 1
+      return;
+    }
+
+
+    const finish =
+      $("singleFinish")?.value ||
+      "nonfoil";
+
+
+    const foil =
+      isFoilLikeSingleFinish(
+        finish
+      );
+
+
+    const qty =
+      Math.max(
+        1,
+        parseInt(
+          $("qtyInput").value,
+          10
+        ) ||
+        1
+      );
+
+
+    const c = {
+
+      id:
+        currentCard.id,
+
+      name:
+        currentCard.name,
+
+      set:
+        currentCard.set,
+
+      set_name:
+        currentCard.set_name,
+
+      collector_number:
+        currentCard.collector_number,
+
+      rarity:
+        currentCard.rarity,
+
+      lang:
+        currentCard.lang ||
+        "en",
+
+      img:
+        cardImg(
+          currentCard
+        )
+    };
+
+
+    /*
+      Older saved entries may only contain:
+
+        foil: true / false
+
+      New entries also contain:
+
+        finish: "surgefoil"
+
+      This keeps the old localStorage data compatible.
+    */
+
+    const ex =
+      collected.find(
+        (entry) => {
+
+          const entryFinish =
+            entry.finish ||
+            (
+              entry.foil
+                ? "foil"
+                : "nonfoil"
+            );
+
+
+          return (
+            entry.card.id ===
+              c.id &&
+            entryFinish ===
+              finish
+          );
+        }
+      );
+
+
+    if (
+      ex
+    ) {
+
+      ex.qty +=
+        qty;
+
+    } else {
+
+      collected.push({
+
+        qty,
+
+        /*
+          Keep the old boolean for export/backward
+          compatibility.
+        */
+        foil,
+
+        /*
+          Exact finish used by pricing and future
+          inventory/export improvements.
+        */
+        finish,
+
+        card:
+          c
+      });
+    }
+
+
+    saveCollection();
+
+
+    renderList();
+
+
+    setStatus(
+      `Added ${qty}× ${c.name} ` +
+      `(${getSingleFinishLabel(finish)}) ` +
+      `[${(c.lang || "en").toUpperCase()}].`
     );
 
-  const c = {
-    id: currentCard.id,
-    name: currentCard.name,
-    set: currentCard.set,
-    set_name: currentCard.set_name,
-    collector_number: currentCard.collector_number,
-    rarity: currentCard.rarity,
-    lang: currentCard.lang || "en",
-    img: cardImg(currentCard)
-  };
 
-  const ex =
-    collected.find(
-      (e) =>
-        e.card.id === c.id &&
-        e.foil === foil
-    );
+    $("candidate").style.display =
+      "none";
 
-  if (ex) {
-    ex.qty += qty;
-  } else {
-    collected.push({
-      qty,
-      foil,
-      card: c
-    });
+
+    $("suggestions").style.display =
+      "none";
+
+
+    currentCard =
+      null;
+
+
+    prints =
+      [];
   }
-
-  // Save collection locally
-  saveCollection();
-
-  renderList();
-
-  setStatus(
-    `Added ${qty}× ${c.name}` +
-    `${foil ? " (foil)" : ""} ` +
-    `[${(c.lang || "en").toUpperCase()}].`
-  );
-
-  $("candidate").style.display = "none";
-  $("suggestions").style.display = "none";
-
-  currentCard = null;
-  prints = [];
-});
+);
 
 // ---------- clear collection ----------
 $("clearListBtn").addEventListener("click", () => {

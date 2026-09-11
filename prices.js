@@ -22,9 +22,51 @@ const PRICE_DATA_URL =
 
 
 const PRICE_FINISH_MAP = {
-  nonfoil: "normal",
-  foil: "foil",
-  etched: "etched"
+
+  /*
+    MTGJSON / Card Kingdom price buckets
+  */
+
+  nonfoil:
+    "normal",
+
+  foil:
+    "foil",
+
+  etched:
+    "etched",
+
+
+  /*
+    These are distinct physical treatments,
+    but Card Kingdom / MTGJSON stores their
+    customer-facing price in the foil bucket
+    for that EXACT printing.
+
+    Because our database is keyed by Scryfall ID,
+    mapping Surge Foil → foil does NOT accidentally
+    use the price of another reprint.
+
+    Example:
+
+      Bard HOB #280
+      exact Scryfall ID
+            ↓
+      surgefoil → foil
+            ↓
+      CK retail.foil for HOB #280
+
+    Not HOB #144 or HOB #244.
+  */
+
+  surgefoil:
+    "foil",
+
+  galaxyfoil:
+    "foil",
+
+  textured:
+    "foil"
 };
 
 
@@ -222,9 +264,16 @@ function getEntryPrice(
 
 
   /*
-    Special finishes are intentionally NOT mapped to regular foil.
-    We prefer N/D over showing a potentially incorrect price.
-  */
+  Special foil treatments are mapped to the provider's
+  foil price bucket ONLY after the exact printing has
+  already been identified by Scryfall ID.
+
+  Etched remains separate.
+
+  Other / Review intentionally has no mapping and
+  therefore returns N/D.
+*/
+
   if (
     !priceFinish
   ) {

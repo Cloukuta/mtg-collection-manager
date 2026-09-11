@@ -1948,51 +1948,82 @@
               </div>
 
 
-              <!-- FOIL / QTY / ADD -->
+              <!-- FINISH / QTY / ADD -->
 
-              <div
-                class="row"
-                style="margin-top:12px"
-              >
+<div
+  class="row"
+  style="margin-top:12px"
+>
 
-                <label class="chk">
+  <label
+    class="fld"
+    style="
+      flex:0 0 auto;
+      min-width:155px
+    "
+  >
 
-                  <input
-                    type="checkbox"
-                    id="foilChk"
-                  />
+    Finish
 
-                  <span>
-                    Foil
-                  </span>
+    <select id="singleFinish">
 
-                </label>
+      <option value="nonfoil">
+        Non-foil
+      </option>
+
+      <option value="foil">
+        Foil
+      </option>
+
+      <option value="etched">
+        Etched Foil
+      </option>
+
+      <option value="surgefoil">
+        Surge Foil
+      </option>
+
+      <option value="galaxyfoil">
+        Galaxy Foil
+      </option>
+
+      <option value="textured">
+        Textured Foil
+      </option>
+
+      <option value="review">
+        Other / Review
+      </option>
+
+    </select>
+
+  </label>
 
 
-                <label class="chk">
+  <label class="chk">
 
-                  Qty
+    Qty
 
-                  <input
-                    type="number"
-                    id="qtyInput"
-                    value="1"
-                    min="1"
-                  />
+    <input
+      type="number"
+      id="qtyInput"
+      value="1"
+      min="1"
+    />
 
-                </label>
+  </label>
 
 
-                <button
-                  id="addBtn"
-                  class="primary"
-                  disabled
-                  style="margin-left:auto"
-                >
-                  Add to list
-                </button>
+  <button
+    id="addBtn"
+    class="primary"
+    disabled
+    style="margin-left:auto"
+  >
+    Add to list
+  </button>
 
-              </div>
+</div>
 
             </div>
 
@@ -2416,19 +2447,19 @@
        EXISTING APPLICATION
   ============================= -->
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 
 
   <!-- ============================
        RAPID BATCH + GLOBAL CAPTURE
   ============================= -->
 
-  <script src="batch-identify.js?v=2"></script>
+  <script src="batch-identify.js?v=3"></script>
 
    <!-- ============================
        PRICES LIST UPDATE
   ============================= -->
-  <script src="prices.js?v=1"></script>
+  <script src="prices.js?v=2"></script>
 
   <!-- ============================
        ACCORDION UI
