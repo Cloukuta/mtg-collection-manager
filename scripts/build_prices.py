@@ -3,6 +3,7 @@ import json
 import os
 import tempfile
 import urllib.request
+from collections import defaultdict
 from datetime import datetime, timezone
 
 import ijson
@@ -81,13 +82,18 @@ def latest_price(
     points,
 ):
     """
-    MTGJSON price points are generally:
+    Convert MTGJSON daily price points:
 
         {
             "2026-09-11": 0.49
         }
 
-    Return the newest valid value.
+    into:
+
+        {
+            "price": 0.49,
+            "date": "2026-09-11"
+        }
     """
 
     if not points:
@@ -110,7 +116,6 @@ def latest_price(
 
             continue
 
-
         valid.append(
             (
                 str(date),
@@ -118,21 +123,17 @@ def latest_price(
             )
         )
 
-
     if not valid:
         return None
-
 
     valid.sort(
         key=lambda item:
             item[0]
     )
 
-
     date, price = (
         valid[-1]
     )
-
 
     return {
         "price": round(
@@ -148,13 +149,11 @@ def choose_newer_price(
     candidate,
 ):
     """
-    Merge two price observations.
+    Keep the newest price observation.
 
-    This matters because multiple MTGJSON UUID records
-    can ultimately map to the same Scryfall printing.
-
-    We do NOT want one UUID to erase normal/foil/etched
-    information previously found for that printing.
+    If both observations have the same date,
+    keep the existing one because they should
+    represent the same physical product.
     """
 
     if candidate is None:
@@ -162,7 +161,6 @@ def choose_newer_price(
 
     if existing is None:
         return candidate
-
 
     existing_date = str(
         existing.get(
@@ -178,34 +176,81 @@ def choose_newer_price(
         )
     )
 
-
     if (
-        candidate_date
-        >=
+        candidate_date >
         existing_date
     ):
 
         return candidate
 
-
     return existing
 
 
+def empty_price_record(
+    currency="USD",
+):
+    return {
+        "cardkingdom": {
+            "currency": (
+                currency
+                or "USD"
+            ),
+            "normal": None,
+            "foil": None,
+            "etched": None,
+        },
+
+        "starcitygames": None,
+    }
+
+
 # ============================================================
-# IDENTIFIERS
+# IDENTIFIER INDEX
 # ============================================================
 
-def build_uuid_to_scryfall(
+def build_identifier_index(
     identifier_file,
 ):
+    """
+    Build several lookup maps.
+
+    Main goal:
+
+    MTGJSON UUID
+        ↓
+    exact Scryfall printing
+
+    Plus alternate finish UUIDs:
+
+    mtgjsonNonFoilVersionId
+    mtgjsonFoilVersionId
+
+    And Card Kingdom product IDs:
+
+    cardKingdomId
+    cardKingdomFoilId
+    cardKingdomEtchedId
+    """
+
     print(
-        "Building MTGJSON UUID → "
-        "Scryfall ID map..."
+        "Building identifier index..."
     )
 
+    cards = {}
 
-    result = {}
+    ck_normal_to_uuids = defaultdict(
+        set
+    )
 
+    ck_foil_to_uuids = defaultdict(
+        set
+    )
+
+    ck_etched_to_uuids = defaultdict(
+        set
+    )
+
+    count = 0
 
     with gzip.open(
         identifier_file,
@@ -224,178 +269,181 @@ def build_uuid_to_scryfall(
                 or {}
             )
 
-
             scryfall_id = (
                 identifiers.get(
                     "scryfallId"
                 )
             )
 
-
             if not scryfall_id:
                 continue
 
+            card_data = {
+                "uuid":
+                    uuid,
 
-            result[
+                "scryfall_id":
+                    scryfall_id,
+
+                "name":
+                    card.get(
+                        "name"
+                    ),
+
+                "set_code":
+                    card.get(
+                        "setCode"
+                    ),
+
+                "number":
+                    card.get(
+                        "number"
+                    ),
+
+                "finishes":
+                    card.get(
+                        "finishes"
+                    )
+                    or [],
+
+                "ck_normal_id":
+                    identifiers.get(
+                        "cardKingdomId"
+                    ),
+
+                "ck_foil_id":
+                    identifiers.get(
+                        "cardKingdomFoilId"
+                    ),
+
+                "ck_etched_id":
+                    identifiers.get(
+                        "cardKingdomEtchedId"
+                    ),
+
+                "nonfoil_uuid":
+                    identifiers.get(
+                        "mtgjsonNonFoilVersionId"
+                    ),
+
+                "foil_uuid":
+                    identifiers.get(
+                        "mtgjsonFoilVersionId"
+                    ),
+            }
+
+            cards[
                 uuid
-            ] = (
-                scryfall_id
+            ] = card_data
+
+            ck_normal_id = (
+                card_data[
+                    "ck_normal_id"
+                ]
             )
 
+            ck_foil_id = (
+                card_data[
+                    "ck_foil_id"
+                ]
+            )
+
+            ck_etched_id = (
+                card_data[
+                    "ck_etched_id"
+                ]
+            )
+
+            if ck_normal_id:
+
+                ck_normal_to_uuids[
+                    str(
+                        ck_normal_id
+                    )
+                ].add(
+                    uuid
+                )
+
+            if ck_foil_id:
+
+                ck_foil_to_uuids[
+                    str(
+                        ck_foil_id
+                    )
+                ].add(
+                    uuid
+                )
+
+            if ck_etched_id:
+
+                ck_etched_to_uuids[
+                    str(
+                        ck_etched_id
+                    )
+                ].add(
+                    uuid
+                )
+
+            count += 1
 
     print(
-        f"Mapped "
-        f"{len(result):,} "
-        f"MTGJSON UUIDs."
+        f"Indexed {count:,} "
+        f"MTGJSON cards."
     )
 
+    print(
+        f"Card Kingdom normal IDs: "
+        f"{len(ck_normal_to_uuids):,}"
+    )
 
-    return result
+    print(
+        f"Card Kingdom foil IDs: "
+        f"{len(ck_foil_to_uuids):,}"
+    )
 
+    print(
+        f"Card Kingdom etched IDs: "
+        f"{len(ck_etched_to_uuids):,}"
+    )
 
-# ============================================================
-# CARD KINGDOM
-# ============================================================
-
-def empty_price_record(
-    currency="USD",
-):
     return {
-        "cardkingdom": {
-            "currency": (
-                currency
-                or "USD"
-            ),
-            "normal": None,
-            "foil": None,
-            "etched": None,
-        },
+        "cards":
+            cards,
 
-        # Reserved for future authorized
-        # Star City Games source.
-        #
-        # We intentionally do not scrape SCG.
-        "starcitygames": None,
+        "ck_normal_to_uuids":
+            ck_normal_to_uuids,
+
+        "ck_foil_to_uuids":
+            ck_foil_to_uuids,
+
+        "ck_etched_to_uuids":
+            ck_etched_to_uuids,
     }
 
 
-def merge_cardkingdom_record(
-    cards,
-    scryfall_id,
-    currency,
-    normal,
-    foil,
-    etched,
-):
-    """
-    Merge price information instead of replacing
-    the complete Scryfall record.
+# ============================================================
+# RAW MTGJSON PRICES
+# ============================================================
 
-    Example:
-
-      MTGJSON UUID A
-        Scryfall X
-        normal = $0.49
-
-      MTGJSON UUID B
-        Scryfall X
-        foil = $1.99
-
-    Old behavior could leave us with only one.
-
-    New behavior becomes:
-
-      Scryfall X
-        normal = $0.49
-        foil   = $1.99
-    """
-
-    if (
-        scryfall_id
-        not in cards
-    ):
-
-        cards[
-            scryfall_id
-        ] = empty_price_record(
-            currency
-        )
-
-
-    record = (
-        cards[
-            scryfall_id
-        ]
-    )
-
-
-    ck = (
-        record[
-            "cardkingdom"
-        ]
-    )
-
-
-    if currency:
-        ck[
-            "currency"
-        ] = currency
-
-
-    ck[
-        "normal"
-    ] = choose_newer_price(
-        ck.get(
-            "normal"
-        ),
-        normal,
-    )
-
-
-    ck[
-        "foil"
-    ] = choose_newer_price(
-        ck.get(
-            "foil"
-        ),
-        foil,
-    )
-
-
-    ck[
-        "etched"
-    ] = choose_newer_price(
-        ck.get(
-            "etched"
-        ),
-        etched,
-    )
-
-
-def extract_cardkingdom_prices(
+def load_cardkingdom_prices(
     price_file,
-    uuid_to_scryfall,
 ):
+    """
+    Store CK retail prices by MTGJSON UUID first.
+
+    We resolve them to Scryfall IDs afterward,
+    once we can inspect alternative finish UUIDs.
+    """
+
     print(
-        "Extracting Card Kingdom "
-        "retail prices..."
+        "Loading Card Kingdom prices "
+        "by MTGJSON UUID..."
     )
 
+    result = {}
 
-    cards = {}
-
-
-    mtgjson_price_records = 0
-    mapped_price_records = 0
-    merged_records = 0
-
-    normal_count = 0
-    foil_count = 0
-    etched_count = 0
-
-
-    seen_scryfall_ids = set()
-
+    records_read = 0
+    records_with_ck = 0
 
     with gzip.open(
         price_file,
@@ -407,19 +455,7 @@ def extract_cardkingdom_prices(
             "data",
         ):
 
-            mtgjson_price_records += 1
-
-
-            scryfall_id = (
-                uuid_to_scryfall.get(
-                    uuid
-                )
-            )
-
-
-            if not scryfall_id:
-                continue
-
+            records_read += 1
 
             paper = (
                 formats.get(
@@ -428,14 +464,12 @@ def extract_cardkingdom_prices(
                 or {}
             )
 
-
             cardkingdom = (
                 paper.get(
                     "cardkingdom"
                 )
                 or {}
             )
-
 
             retail = (
                 cardkingdom.get(
@@ -444,13 +478,11 @@ def extract_cardkingdom_prices(
                 or {}
             )
 
-
             normal = latest_price(
                 retail.get(
                     "normal"
                 )
             )
-
 
             foil = latest_price(
                 retail.get(
@@ -458,13 +490,11 @@ def extract_cardkingdom_prices(
                 )
             )
 
-
             etched = latest_price(
                 retail.get(
                     "etched"
                 )
             )
-
 
             if not any(
                 (
@@ -475,97 +505,731 @@ def extract_cardkingdom_prices(
             ):
                 continue
 
+            records_with_ck += 1
 
-            mapped_price_records += 1
-
-
-            if (
-                scryfall_id
-                in seen_scryfall_ids
-            ):
-
-                merged_records += 1
-
-
-            seen_scryfall_ids.add(
-                scryfall_id
-            )
-
-
-            if normal:
-                normal_count += 1
-
-            if foil:
-                foil_count += 1
-
-            if etched:
-                etched_count += 1
-
-
-            merge_cardkingdom_record(
-                cards=cards,
-
-                scryfall_id=(
-                    scryfall_id
-                ),
-
-                currency=(
+            result[
+                uuid
+            ] = {
+                "currency":
                     cardkingdom.get(
                         "currency"
                     )
-                    or "USD"
-                ),
+                    or "USD",
 
-                normal=normal,
-                foil=foil,
-                etched=etched,
+                "normal":
+                    normal,
+
+                "foil":
+                    foil,
+
+                "etched":
+                    etched,
+            }
+
+    print(
+        f"MTGJSON price records read: "
+        f"{records_read:,}"
+    )
+
+    print(
+        f"UUIDs with Card Kingdom price: "
+        f"{records_with_ck:,}"
+    )
+
+    return result
+
+
+# ============================================================
+# UUID PRICE LOOKUP
+# ============================================================
+
+def get_uuid_price(
+    raw_prices,
+    uuid,
+    finish,
+):
+    if not uuid:
+        return None
+
+    record = raw_prices.get(
+        uuid
+    )
+
+    if not record:
+        return None
+
+    return record.get(
+        finish
+    )
+
+
+def price_from_candidate_uuids(
+    raw_prices,
+    uuids,
+    finish,
+):
+    """
+    Search a small collection of UUIDs that represent
+    the same CK product / finish.
+
+    Never crosses to another Scryfall printing unless
+    its Card Kingdom identifier explicitly links it.
+    """
+
+    result = None
+
+    for uuid in uuids:
+
+        candidate = get_uuid_price(
+            raw_prices,
+            uuid,
+            finish,
+        )
+
+        result = choose_newer_price(
+            result,
+            candidate,
+        )
+
+    return result
+
+
+# ============================================================
+# NORMAL RESOLUTION
+# ============================================================
+
+def resolve_normal_price(
+    card,
+    raw_prices,
+    identifier_index,
+):
+    uuid = (
+        card[
+            "uuid"
+        ]
+    )
+
+    # 1. Direct UUID
+    price = get_uuid_price(
+        raw_prices,
+        uuid,
+        "normal",
+    )
+
+    if price:
+        return price, "direct"
+
+    # 2. Explicit MTGJSON nonfoil counterpart
+    nonfoil_uuid = (
+        card.get(
+            "nonfoil_uuid"
+        )
+    )
+
+    price = get_uuid_price(
+        raw_prices,
+        nonfoil_uuid,
+        "normal",
+    )
+
+    if price:
+        return (
+            price,
+            "mtgjson_nonfoil_uuid",
+        )
+
+    # 3. Same Card Kingdom normal product ID
+    ck_id = (
+        card.get(
+            "ck_normal_id"
+        )
+    )
+
+    if ck_id:
+
+        candidate_uuids = (
+            identifier_index[
+                "ck_normal_to_uuids"
+            ].get(
+                str(
+                    ck_id
+                ),
+                set(),
+            )
+        )
+
+        price = (
+            price_from_candidate_uuids(
+                raw_prices,
+                candidate_uuids,
+                "normal",
+            )
+        )
+
+        if price:
+            return (
+                price,
+                "cardkingdom_id",
             )
 
+    return None, None
 
+
+# ============================================================
+# FOIL RESOLUTION
+# ============================================================
+
+def resolve_foil_price(
+    card,
+    raw_prices,
+    identifier_index,
+):
+    uuid = (
+        card[
+            "uuid"
+        ]
+    )
+
+    # 1. Direct UUID
+    price = get_uuid_price(
+        raw_prices,
+        uuid,
+        "foil",
+    )
+
+    if price:
+        return price, "direct"
+
+    # 2. Explicit MTGJSON foil counterpart
+    foil_uuid = (
+        card.get(
+            "foil_uuid"
+        )
+    )
+
+    price = get_uuid_price(
+        raw_prices,
+        foil_uuid,
+        "foil",
+    )
+
+    if price:
+        return (
+            price,
+            "mtgjson_foil_uuid",
+        )
+
+    # Occasionally the foil-specific UUID stores
+    # its CK product under normal rather than foil.
+    #
+    # We only allow this because MTGJSON itself
+    # explicitly declares this UUID as the foil
+    # counterpart of the same card.
+    price = get_uuid_price(
+        raw_prices,
+        foil_uuid,
+        "normal",
+    )
+
+    if price:
+        return (
+            price,
+            "mtgjson_foil_uuid_normal_bucket",
+        )
+
+    # 3. Same Card Kingdom foil product ID
+    ck_id = (
+        card.get(
+            "ck_foil_id"
+        )
+    )
+
+    if ck_id:
+
+        candidate_uuids = (
+            identifier_index[
+                "ck_foil_to_uuids"
+            ].get(
+                str(
+                    ck_id
+                ),
+                set(),
+            )
+        )
+
+        price = (
+            price_from_candidate_uuids(
+                raw_prices,
+                candidate_uuids,
+                "foil",
+            )
+        )
+
+        if price:
+            return (
+                price,
+                "cardkingdom_foil_id",
+            )
+
+        # Same guarded fallback:
+        # this is only among UUIDs that share the
+        # exact CK foil product identifier.
+        price = (
+            price_from_candidate_uuids(
+                raw_prices,
+                candidate_uuids,
+                "normal",
+            )
+        )
+
+        if price:
+            return (
+                price,
+                "cardkingdom_foil_id_normal_bucket",
+            )
+
+    return None, None
+
+
+# ============================================================
+# ETCHED RESOLUTION
+# ============================================================
+
+def resolve_etched_price(
+    card,
+    raw_prices,
+    identifier_index,
+):
+    uuid = (
+        card[
+            "uuid"
+        ]
+    )
+
+    # 1. Direct UUID
+    price = get_uuid_price(
+        raw_prices,
+        uuid,
+        "etched",
+    )
+
+    if price:
+        return price, "direct"
+
+    # 2. Card Kingdom etched product ID
+    ck_id = (
+        card.get(
+            "ck_etched_id"
+        )
+    )
+
+    if ck_id:
+
+        candidate_uuids = (
+            identifier_index[
+                "ck_etched_to_uuids"
+            ].get(
+                str(
+                    ck_id
+                ),
+                set(),
+            )
+        )
+
+        price = (
+            price_from_candidate_uuids(
+                raw_prices,
+                candidate_uuids,
+                "etched",
+            )
+        )
+
+        if price:
+            return (
+                price,
+                "cardkingdom_etched_id",
+            )
+
+    return None, None
+
+
+# ============================================================
+# RESOLVE TO SCRYFALL IDs
+# ============================================================
+
+def build_scryfall_prices(
+    identifier_index,
+    raw_prices,
+):
     print()
     print(
-        "Card Kingdom extraction:"
+        "Resolving CK prices to "
+        "exact Scryfall printings..."
     )
 
-    print(
-        f"  MTGJSON price records read: "
-        f"{mtgjson_price_records:,}"
+    cards = {}
+
+    stats = defaultdict(
+        int
     )
 
-    print(
-        f"  CK records mapped: "
-        f"{mapped_price_records:,}"
+    source_stats = defaultdict(
+        int
     )
 
-    print(
-        f"  Duplicate Scryfall mappings "
-        f"merged: "
-        f"{merged_records:,}"
+    indexed_cards = (
+        identifier_index[
+            "cards"
+        ]
     )
 
+    for uuid, card in indexed_cards.items():
+
+        scryfall_id = (
+            card.get(
+                "scryfall_id"
+            )
+        )
+
+        if not scryfall_id:
+            continue
+
+        normal, normal_source = (
+            resolve_normal_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        foil, foil_source = (
+            resolve_foil_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        etched, etched_source = (
+            resolve_etched_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        if not any(
+            (
+                normal,
+                foil,
+                etched,
+            )
+        ):
+            continue
+
+        if scryfall_id not in cards:
+
+            cards[
+                scryfall_id
+            ] = empty_price_record()
+
+        ck = (
+            cards[
+                scryfall_id
+            ][
+                "cardkingdom"
+            ]
+        )
+
+        ck[
+            "normal"
+        ] = choose_newer_price(
+            ck.get(
+                "normal"
+            ),
+            normal,
+        )
+
+        ck[
+            "foil"
+        ] = choose_newer_price(
+            ck.get(
+                "foil"
+            ),
+            foil,
+        )
+
+        ck[
+            "etched"
+        ] = choose_newer_price(
+            ck.get(
+                "etched"
+            ),
+            etched,
+        )
+
+        if normal:
+            stats[
+                "normal"
+            ] += 1
+
+        if foil:
+            stats[
+                "foil"
+            ] += 1
+
+        if etched:
+            stats[
+                "etched"
+            ] += 1
+
+        if normal_source:
+            source_stats[
+                f"normal:{normal_source}"
+            ] += 1
+
+        if foil_source:
+            source_stats[
+                f"foil:{foil_source}"
+            ] += 1
+
+        if etched_source:
+            source_stats[
+                f"etched:{etched_source}"
+            ] += 1
+
     print(
-        f"  Unique Scryfall printings "
-        f"with CK price: "
+        f"Unique Scryfall printings "
+        f"with CK prices: "
         f"{len(cards):,}"
     )
 
     print(
-        f"  Normal observations: "
-        f"{normal_count:,}"
+        f"Normal mappings: "
+        f"{stats['normal']:,}"
     )
 
     print(
-        f"  Foil observations: "
-        f"{foil_count:,}"
+        f"Foil mappings: "
+        f"{stats['foil']:,}"
     )
 
     print(
-        f"  Etched observations: "
-        f"{etched_count:,}"
+        f"Etched mappings: "
+        f"{stats['etched']:,}"
     )
 
+    print()
+    print(
+        "Resolution sources:"
+    )
+
+    for key in sorted(
+        source_stats
+    ):
+
+        print(
+            f"  {key}: "
+            f"{source_stats[key]:,}"
+        )
 
     return cards
+
+
+# ============================================================
+# TARGET DEBUGGING
+# ============================================================
+
+def debug_target_card(
+    identifier_index,
+    raw_prices,
+    target_set="SOS",
+    target_number="367",
+):
+    """
+    Print everything relevant for our known problem card.
+
+    This lets us see exactly what MTGJSON contains for:
+
+        Witherbloom Charm
+        SOS #367
+
+    The workflow log becomes our debugging tool.
+    """
+
+    print()
+    print(
+        "=" * 60
+    )
+
+    print(
+        f"DEBUG TARGET: "
+        f"{target_set} #{target_number}"
+    )
+
+    print(
+        "=" * 60
+    )
+
+    found = False
+
+    for uuid, card in (
+        identifier_index[
+            "cards"
+        ].items()
+    ):
+
+        set_code = str(
+            card.get(
+                "set_code"
+            )
+            or ""
+        ).upper()
+
+        number = str(
+            card.get(
+                "number"
+            )
+            or ""
+        )
+
+        if (
+            set_code !=
+            target_set.upper()
+        ):
+            continue
+
+        if (
+            number !=
+            str(
+                target_number
+            )
+        ):
+            continue
+
+        found = True
+
+        print()
+        print(
+            f"Name: "
+            f"{card.get('name')}"
+        )
+
+        print(
+            f"UUID: "
+            f"{uuid}"
+        )
+
+        print(
+            f"Scryfall ID: "
+            f"{card.get('scryfall_id')}"
+        )
+
+        print(
+            f"Finishes: "
+            f"{card.get('finishes')}"
+        )
+
+        print(
+            f"CK normal ID: "
+            f"{card.get('ck_normal_id')}"
+        )
+
+        print(
+            f"CK foil ID: "
+            f"{card.get('ck_foil_id')}"
+        )
+
+        print(
+            f"CK etched ID: "
+            f"{card.get('ck_etched_id')}"
+        )
+
+        print(
+            f"MTGJSON nonfoil UUID: "
+            f"{card.get('nonfoil_uuid')}"
+        )
+
+        print(
+            f"MTGJSON foil UUID: "
+            f"{card.get('foil_uuid')}"
+        )
+
+        print(
+            f"Direct raw prices: "
+            f"{raw_prices.get(uuid)}"
+        )
+
+        if card.get(
+            "nonfoil_uuid"
+        ):
+
+            print(
+                "Nonfoil counterpart prices: "
+                f"{raw_prices.get(card['nonfoil_uuid'])}"
+            )
+
+        if card.get(
+            "foil_uuid"
+        ):
+
+            print(
+                "Foil counterpart prices: "
+                f"{raw_prices.get(card['foil_uuid'])}"
+            )
+
+        normal, normal_source = (
+            resolve_normal_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        foil, foil_source = (
+            resolve_foil_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        etched, etched_source = (
+            resolve_etched_price(
+                card,
+                raw_prices,
+                identifier_index,
+            )
+        )
+
+        print(
+            f"Resolved normal: "
+            f"{normal} "
+            f"via {normal_source}"
+        )
+
+        print(
+            f"Resolved foil: "
+            f"{foil} "
+            f"via {foil_source}"
+        )
+
+        print(
+            f"Resolved etched: "
+            f"{etched} "
+            f"via {etched_source}"
+        )
+
+    if not found:
+
+        print(
+            "Target card was NOT found "
+            "in AllIdentifiers."
+        )
+
+    print(
+        "=" * 60
+    )
 
 
 # ============================================================
@@ -582,11 +1246,8 @@ def write_output(
         exist_ok=True,
     )
 
-
     output = {
-
         "meta": {
-
             "generated_at": (
                 datetime.now(
                     timezone.utc
@@ -606,27 +1267,13 @@ def write_output(
             "starcitygames_source":
                 None,
 
-            
-            # This is intentionally represented below
-            # using a normal Python string key/value.
-            
+            "mapping_version":
+                "ck-identifiers-v3",
         },
 
         "cards":
             cards,
     }
-
-
-    # Add build information separately so that
-    # prices.js can ignore it safely.
-    output[
-        "meta"
-    ][
-        "mapping_version"
-    ] = (
-        "scryfall-id-merged-v2"
-    )
-
 
     with open(
         OUTPUT_FILE,
@@ -644,7 +1291,6 @@ def write_output(
             ),
         )
 
-
     size_mb = (
         os.path.getsize(
             OUTPUT_FILE
@@ -653,20 +1299,17 @@ def write_output(
         / 1024
     )
 
-
     print()
     print(
         f"Wrote "
         f"{OUTPUT_FILE}"
     )
 
-
     print(
         f"Unique priced "
         f"Scryfall IDs: "
         f"{len(cards):,}"
     )
-
 
     print(
         f"Output size: "
@@ -682,44 +1325,59 @@ def main():
 
     with tempfile.TemporaryDirectory() as temp:
 
-        identifiers_file = os.path.join(
-            temp,
-            "AllIdentifiers.json.gz",
+        identifiers_file = (
+            os.path.join(
+                temp,
+                "AllIdentifiers.json.gz",
+            )
         )
 
-
-        prices_file = os.path.join(
-            temp,
-            "AllPricesToday.json.gz",
+        prices_file = (
+            os.path.join(
+                temp,
+                "AllPricesToday.json.gz",
+            )
         )
-
 
         download(
             IDENTIFIERS_URL,
             identifiers_file,
         )
 
-
         download(
             PRICES_URL,
             prices_file,
         )
 
-
-        uuid_to_scryfall = (
-            build_uuid_to_scryfall(
+        identifier_index = (
+            build_identifier_index(
                 identifiers_file
             )
         )
 
-
-        cards = (
-            extract_cardkingdom_prices(
-                prices_file,
-                uuid_to_scryfall,
+        raw_prices = (
+            load_cardkingdom_prices(
+                prices_file
             )
         )
 
+        # ----------------------------------------------------
+        # DEBUG OUR KNOWN PROBLEM CARD
+        # ----------------------------------------------------
+
+        debug_target_card(
+            identifier_index,
+            raw_prices,
+            target_set="SOS",
+            target_number="367",
+        )
+
+        cards = (
+            build_scryfall_prices(
+                identifier_index,
+                raw_prices,
+            )
+        )
 
         write_output(
             cards
